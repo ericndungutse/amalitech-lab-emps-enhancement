@@ -4,10 +4,8 @@ public class InvalidInputException extends RuntimeException {
       private Object invalidValue;
       private String field;
 
-      public InvalidInputException(String message, Object invalidValue,
-                  String field) {
+      public InvalidInputException(String message, String field) {
             super(message);
-            this.invalidValue = invalidValue;
             this.field = field;
       }
 

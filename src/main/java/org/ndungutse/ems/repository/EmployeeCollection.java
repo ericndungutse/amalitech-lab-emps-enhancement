@@ -86,6 +86,7 @@ public class EmployeeCollection<T> {
                 employeeToUpdate.setName((String) newValue);
                 break;
             case "department":
+                Validator.validateDepartment(newValue);
                 employeeToUpdate.setDepartment((Department) newValue);
                 break;
             case "salary":
@@ -98,12 +99,25 @@ public class EmployeeCollection<T> {
                     throw new IllegalArgumentException(
                             "Unsupported type of salary.");
                 }
+                Validator.validateSalary(newSalary);
                 employeeToUpdate.setSalary(newSalary);
                 break;
             case "performanceRating":
+                double newRating;
+                if (newValue instanceof Integer) {
+                    newRating = ((Integer) newValue).doubleValue();
+                } else if (newValue instanceof Double) {
+                    newRating = (double) newValue;
+                } else {
+                    throw new IllegalArgumentException(
+                            "Unsupported type of salary.");
+                }
+                Validator.validateRating(newRating);
                 employeeToUpdate.setPerformanceRating((double) newValue);
                 break;
             case "yearsOfExperience":
+                // Validator
+                Validator.validateExperience(newValue);
                 employeeToUpdate.setYearsOfExperience((Integer) newValue);
                 break;
             case "isActive":

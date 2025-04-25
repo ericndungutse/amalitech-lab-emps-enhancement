@@ -38,13 +38,15 @@ public class HelloApplication extends Application {
                         .getEmployeeCollection();
 
         public static void main(String[] args) {
-                employeeCollection.addEmployee(new Employee<>(1, "",
+                // TODO: Pass only values to the add employee and create
+                // employee from there
+                employeeCollection.addEmployee(new Employee<>(1, "Eric",
                                 Department.IT, 1500, 5, 3, true));
 
-                employeeCollection.removeEmployee(4);
-
-                // employeeCollection.updateEmployeeEmployeeDetails(1, "name",
-                // "");
+                employeeCollection.updateEmployeeEmployeeDetails(1,
+                                "yearsOfExperience", 10);
+                System.out.println(
+                                employeeCollection.getEmployeeByName("Eric"));
                 // employeeCollection.addEmployee(new Employee<>(2, "Camariza",
                 // Department.FINANCE, 3200, 3.9, 5, true));
                 // employeeCollection.addEmployee(new Employee<>(3, "Lodrigues",

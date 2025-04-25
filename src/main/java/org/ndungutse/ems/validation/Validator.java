@@ -15,47 +15,68 @@ public class Validator {
         // Validate Name
         validateName(employee.getName());
 
-        // Check if Department is present
-        if (employee.getDepartment() == null) {
-            throw new InvalidInputException("Department must be selected.",
-                    employee.getName(), "department");
-        }
+        // Validate Department
+        validateDepartment(employee.getDepartment());
 
-        if (employee.getSalary() < 0) {
-            throw new InvalidInputException("Salary must be a positive number.",
-                    employee.getSalary(), "Salary");
-        }
+        // Validate Rating
+        validateRating(employee.getPerformanceRating());
 
-        double rating = employee.getPerformanceRating();
-        if (rating < 0 || rating > 5) {
-            throw new InvalidInputException(
-                    "Invalid rating. It should be between 0 and 5", rating,
-                    "rating");
-        }
+        // Validate Salary
+        validateSalary(employee.getSalary());
 
-        if (employee.getYearsOfExperience() < 0) {
-            throw new InvalidInputException(
-                    "Years of experience must be a non-negative value.",
-                    employee.getYearsOfExperience(), "yearsOfExperience");
-        }
+        // Validate Experience
+        validateExperience(employee.getYearsOfExperience());
 
     }
 
-    public static <T> void validateRating(Double rating) {
+    // Rating validator
+    public static void validateRating(Double rating) {
         if (rating < 0 || rating > 5)
-            throw new AppException(
-                    "Rating should be between 0 and 5 both included");
+            throw new InvalidInputException(
+                    "Invalid input: " + rating + " should be between 0 and 5",
+                    "performanceRating");
     }
 
-    public static <T> void validateSalary(Double salary) {
+    // Salary Validator
+    public static void validateSalary(Double salary) {
         if (salary <= 0)
-            throw new AppException("Salary should be greater than 0.");
+            throw new InvalidInputException("Invalid input: " + salary
+                    + ". Salary should be greater than 0", "Salary");
     }
 
+    // Name Validator
     public static void validateName(String name) {
         if (name.trim().isEmpty() || name.isBlank()) {
             throw new InvalidInputException("Employee name cannot be empty",
-                    name, "name");
+                    "name");
+        }
+    }
+
+    // Department Validator
+    public static void validateDepartment(Object newValue) {
+        // Check if Department is present
+        if (newValue == null) {
+            throw new InvalidInputException("Department cannot be null",
+                    "department");
+        }
+
+    }
+
+    public static void validateExperience(Object newValue) {
+        if (newValue instanceof Number) {
+            double value = ((Number) newValue).doubleValue();
+
+            if (value < 0) {
+                throw new InvalidInputException(
+                        "Invalid value: " + newValue
+                                + ". Experience value cannot be less than zero",
+                        "Years of experience");
+            }
+        } else {
+            throw new InvalidInputException(
+                    "Invalid input: " + newValue
+                            + ". The experience value must be a number",
+                    "Years of experience");
         }
     }
 }
