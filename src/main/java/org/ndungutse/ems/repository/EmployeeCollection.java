@@ -116,6 +116,8 @@ public class EmployeeCollection<T> {
             default:
                 throw new AppException("Invalid field.");
             }
+        } catch (InvalidInputException e) {
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -204,7 +206,7 @@ public class EmployeeCollection<T> {
                         .contains(name.toLowerCase());
             }).collect(Collectors.toList());
 
-        } catch (Exception e) {
+        } catch (AppException e) {
             System.err.println(e.getMessage());
         }
         return employeesByName;
@@ -223,7 +225,7 @@ public class EmployeeCollection<T> {
                     .filter(employee -> employee.getSalary() >= minSalary
                             && employee.getSalary() <= maxSalary)
                     .collect(Collectors.toList());
-        } catch (Exception e) {
+        } catch (InvalidInputException e) {
             System.err.println(e.getMessage());
         }
 
@@ -232,10 +234,17 @@ public class EmployeeCollection<T> {
 
     // Employees with minimum performance rating (e.g., rating >= 4.0).
     public List<Employee<T>> getEmployeesByPerformanceRating(double minRating) {
-        List<Employee<T>> emp = this.employees.values().stream().filter(
-                employee -> employee.getPerformanceRating() >= minRating)
-                .collect(Collectors.toList());
-        return emp;
+        List<Employee<T>> employees = new ArrayList<>();
+        try {
+            Validator.validateRating(minRating);
+            employees = this.employees.values().stream().filter(
+                    employee -> employee.getPerformanceRating() >= minRating)
+                    .collect(Collectors.toList());
+
+        } catch (InvalidInputException e) {
+            System.out.println(e.getMessage());
+        }
+        return employees;
     }
 
     // Combined Filters
@@ -308,16 +317,24 @@ public class EmployeeCollection<T> {
     // rating
     // ≥ 4.5).
     public void giveSalaryRaise(double percentage, double minRating) {
+        // Use Iterator not loop to prevent ConcurrentModificationException
         Iterator<Employee<T>> iterator = this.employees.values().iterator();
 
-        while (iterator.hasNext()) {
-            Employee<T> employee = iterator.next();
-            if (employee.getPerformanceRating() >= minRating) {
-                double newSalary = employee.getSalary()
-                        + (employee.getSalary() * percentage / 100);
-                employee.setSalary(newSalary);
+        try {
+            Validator.validateDepartment(minRating);
+            Validator.validatePercentage(percentage);
+            while (iterator.hasNext()) {
+                Employee<T> employee = iterator.next();
+                if (employee.getPerformanceRating() >= minRating) {
+                    double newSalary = employee.getSalary()
+                            + (employee.getSalary() * percentage / 100);
+                    employee.setSalary(newSalary);
+                }
             }
+        } catch (InvalidInputException e) {
+            System.err.println(e.getMessage());
         }
+
     }
 
     // Retrieve the top 5 highest-paid employees.
@@ -335,11 +352,21 @@ public class EmployeeCollection<T> {
 
     // Calculate the average salary of employees by department.
     public double calculateAverageSalaryByDepartment(Department department) {
-        List<Employee<T>> departmentEmployees = this
-                .getEmployeesByDepartment(department);
+        double avg = 0.0;
+        try {
 
-        return departmentEmployees.stream().mapToDouble(Employee::getSalary)
-                .average().orElse(0.0);
+            Validator.validateDepartment(department);
+            List<Employee<T>> departmentEmployees = new ArrayList<>(
+                    this.getEmployeesByDepartment(department));
+
+            avg = departmentEmployees.stream().mapToDouble(Employee::getSalary)
+                    .average().orElse(0.0);
+
+        } catch (InvalidInputException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return avg;
     }
 
     // Display employees

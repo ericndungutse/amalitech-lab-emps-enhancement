@@ -55,6 +55,15 @@ public class Validator {
 
     }
 
+    public static void validatePercentage(double percentage) {
+        if (percentage <= 0) {
+            throw new InvalidInputException(
+                    "Invalid input: " + percentage
+                            + " Percentage must be greater than 0.",
+                    "percentage");
+        }
+    }
+
     // Salary Validator
     public static void validateSalary(Object salary) {
         double newSalary;

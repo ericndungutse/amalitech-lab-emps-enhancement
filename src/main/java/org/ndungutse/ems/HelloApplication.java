@@ -59,7 +59,7 @@ public class HelloApplication extends Application {
                                 Department.IT, 5500, 4.6, 7, true));
 
                 System.out.println(employeeCollection
-                                .getEmployeesBySalaryRange(-23, 43));
+                                .getEmployeesByPerformanceRating(3));
                 // employeeCollection.addEmployee(new Employee<>(8, "Sandrine",
                 // Department.HR, 2000, 3.6, 3, false));
                 // employeeCollection.addEmployee(new Employee<>(9, "Albert",
