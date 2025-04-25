@@ -24,13 +24,18 @@ public class EmployeeCollection<T> {
 
     // Add employee
     public void addEmployee(Employee<T> employee) {
-        Validator.validateNewEmployee(employee);
-        // Check if employee already exists
-        if (this.employees.get(employee.getEmployeeId()) != null)
-            throw new AppException("Employee already exists");
+        try {
+            Validator.validateNewEmployee(employee);
+            // Check if employee already exists
+            if (this.employees.get(employee.getEmployeeId()) != null)
+                throw new AppException("Employee already exists");
 
-        // Save new employee
-        this.employees.put(employee.getEmployeeId(), employee);
+            // Save new employee
+            this.employees.put(employee.getEmployeeId(), employee);
+
+        } catch (AppException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     // Remove Employee
