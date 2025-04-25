@@ -41,7 +41,7 @@ public class HelloApplication extends Application {
                 // TODO: Pass only values to the add employee and create
                 // employee from there
 
-                employeeCollection.getAllEmployees();
+                employeeCollection.getAllEmployees(-1);
                 // employeeCollection.addEmployee(new Employee<>(1, "Eric",
                 // Department.IT, 1500, 5, 3, true));
 

@@ -143,18 +143,32 @@ public class EmployeeCollection<T> {
 
     // Paginated Get Employees
     public List<Employee<T>> getAllEmployees(int pageNumber) {
-        List<Employee<T>> allEmployees = new ArrayList<>(
-                this.employees.values());
-        int fromIndex = (pageNumber - 1) * pageSize;
-        int toIndex = Math.min(fromIndex + pageSize, allEmployees.size());
+        try {
+            if (pageNumber <= 0) {
+                throw new AppException("Page number must be greater than 0.");
+            }
+            if (this.employees.values().isEmpty()) {
+                throw new AppException("No employees found in the system.");
+            }
 
-        if (fromIndex >= allEmployees.size() || fromIndex < 0) {
-            return new ArrayList<>();
+            List<Employee<T>> allEmployees = new ArrayList<>(
+                    this.employees.values());
+
+            int fromIndex = (pageNumber - 1) * pageSize;
+            int toIndex = Math.min(fromIndex + pageSize, allEmployees.size());
+
+            if (fromIndex >= allEmployees.size() || fromIndex < 0) {
+                return new ArrayList<>();
+            }
+
+            List<Employee<T>> page = allEmployees.subList(fromIndex, toIndex);
+            displayEmployees(page, "Employees - Page " + pageNumber);
+            return page;
+        } catch (AppException e) {
+            System.out.println(e.getMessage());
         }
 
-        List<Employee<T>> page = allEmployees.subList(fromIndex, toIndex);
-        displayEmployees(page, "Employees - Page " + pageNumber);
-        return page;
+        return null;
     }
 
     // Get employees by department
