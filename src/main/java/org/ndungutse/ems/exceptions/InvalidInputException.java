@@ -19,4 +19,9 @@ public class InvalidInputException extends RuntimeException {
             return field;
       }
 
+      public String getMessage() {
+            return "{ message: " + super.getMessage() + ", field: " + this.field
+                        + " }";
+      }
+
 }

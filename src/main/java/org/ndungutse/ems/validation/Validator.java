@@ -1,9 +1,7 @@
 package org.ndungutse.ems.validation;
 
 import org.ndungutse.ems.exceptions.AppException;
-import org.ndungutse.ems.exceptions.InvalidDepartmentException;
 import org.ndungutse.ems.exceptions.InvalidInputException;
-import org.ndungutse.ems.exceptions.InvalidSalaryException;
 import org.ndungutse.ems.models.Employee;
 
 public class Validator {
@@ -14,20 +12,18 @@ public class Validator {
             throw new AppException("Employee cannot be null.");
         }
 
-        String name = employee.getName();
-        if (name == null || name.trim().isEmpty()) {
-            throw new AppException("Employee name cannot be empty.");
-        }
+        // Validate Name
+        validateName(employee.getName());
 
         // Check if Department is present
         if (employee.getDepartment() == null) {
-            throw new InvalidDepartmentException(employee.getDepartment(),
-                    "Department must be selected.");
+            throw new InvalidInputException("Department must be selected.",
+                    employee.getName(), "department");
         }
 
         if (employee.getSalary() < 0) {
-            throw new InvalidSalaryException(
-                    "Salary must be a positive number.", employee.getSalary());
+            throw new InvalidInputException("Salary must be a positive number.",
+                    employee.getSalary(), "Salary");
         }
 
         double rating = employee.getPerformanceRating();
@@ -38,7 +34,9 @@ public class Validator {
         }
 
         if (employee.getYearsOfExperience() < 0) {
-            throw new AppException("Years of experience must be non-negative.");
+            throw new InvalidInputException(
+                    "Years of experience must be a non-negative value.",
+                    employee.getYearsOfExperience(), "yearsOfExperience");
         }
 
     }
@@ -52,5 +50,12 @@ public class Validator {
     public static <T> void validateSalary(Double salary) {
         if (salary <= 0)
             throw new AppException("Salary should be greater than 0.");
+    }
+
+    public static void validateName(String name) {
+        if (name.trim().isEmpty() || name.isBlank()) {
+            throw new InvalidInputException("Employee name cannot be empty",
+                    name, "name");
+        }
     }
 }

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.ndungutse.ems.AppContext;
 import org.ndungutse.ems.exceptions.AppException;
+import org.ndungutse.ems.exceptions.EmployeeNotFoundException;
 import org.ndungutse.ems.exceptions.InvalidInputException;
 import org.ndungutse.ems.exceptions.InvalidSalaryException;
 import org.ndungutse.ems.models.Department;
@@ -40,69 +41,79 @@ public class EmployeeCollection<T> {
             System.out.println("{ message: " + e.getMessage()
                     + ", invalidValue: " + e.getInvalidValue() + " }");
         } catch (InvalidInputException e) {
-            System.out.println(
-                    "{ message: " + e.getMessage() + ", field: " + e.getField()
-                            + ", invalidValue: " + e.getInvalidValue() + " }");
+            System.out.println(e.getMessage());
+            return;
         }
     }
 
     // Remove Employee
     public void removeEmployee(T employeeId) {
-        // Check if employee with id exists
-        if (this.employees.get(employeeId) == null)
-            throw new AppException(
-                    "Employee with id: " + employeeId + "does not exists.");
+        try {
+            // Check if employee with id exists
+            if (this.employees.get(employeeId) == null)
+                throw new EmployeeNotFoundException(
+                        "Employee with id: " + employeeId + "does not exists.");
 
-        // Remove the employee
-        employees.remove(employeeId);
+            // Remove the employee
+            employees.remove(employeeId);
+        } catch (EmployeeNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     // Update Employee Details
     public void updateEmployeeEmployeeDetails(T employeeId, String field,
             Object newValue) {
-        // Find the employee
-        Employee<T> employeeToUpdate = this.employees.get(employeeId);
+        try {
 
-        // Check if employee exists
-        if (employeeToUpdate == null)
-            throw new AppException(
-                    "Employee with id: \" + employeeId + \"does not exists.");
+            // Find the employee
+            Employee<T> employeeToUpdate = this.employees.get(employeeId);
 
-        // Restrict Id Update
-        if (field == "employeeId")
-            throw new AppException("Employee Id cannot be update.");
+            // Check if employee exists
+            if (employeeToUpdate == null)
+                throw new EmployeeNotFoundException("Employee with id: "
+                        + employeeId + " does not exists.");
 
-        // Update employee field
-        switch (field) {
-        case "name":
-            employeeToUpdate.setName((String) newValue);
-            break;
-        case "department":
-            employeeToUpdate.setDepartment((Department) newValue);
-            break;
-        case "salary":
-            double newSalary;
-            if (newValue instanceof Integer) {
-                newSalary = ((Integer) newValue).doubleValue();
-            } else if (newValue instanceof Double) {
-                newSalary = (double) newValue;
-            } else {
-                throw new IllegalArgumentException(
-                        "Unsupported type of salary.");
+            // Restrict Id Update
+            if (field == "employeeId")
+                throw new AppException("Employee Id cannot be update.");
+
+            // Update employee field
+            switch (field) {
+            case "name":
+                // validate employee
+                Validator.validateName((String) newValue);
+                employeeToUpdate.setName((String) newValue);
+                break;
+            case "department":
+                employeeToUpdate.setDepartment((Department) newValue);
+                break;
+            case "salary":
+                double newSalary;
+                if (newValue instanceof Integer) {
+                    newSalary = ((Integer) newValue).doubleValue();
+                } else if (newValue instanceof Double) {
+                    newSalary = (double) newValue;
+                } else {
+                    throw new IllegalArgumentException(
+                            "Unsupported type of salary.");
+                }
+                employeeToUpdate.setSalary(newSalary);
+                break;
+            case "performanceRating":
+                employeeToUpdate.setPerformanceRating((double) newValue);
+                break;
+            case "yearsOfExperience":
+                employeeToUpdate.setYearsOfExperience((Integer) newValue);
+                break;
+            case "isActive":
+                employeeToUpdate.setActive((Boolean) newValue);
+                break;
+            default:
+                throw new AppException("Invalid field.");
             }
-            employeeToUpdate.setSalary(newSalary);
-            break;
-        case "performanceRating":
-            employeeToUpdate.setPerformanceRating((double) newValue);
-            break;
-        case "yearsOfExperience":
-            employeeToUpdate.setYearsOfExperience((Integer) newValue);
-            break;
-        case "isActive":
-            employeeToUpdate.setActive((Boolean) newValue);
-            break;
-        default:
-            throw new AppException("Invalid field.");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
