@@ -13,78 +13,76 @@
             prefHeight="500.0" prefWidth="600.0"
             style="-fx-background-color: #f9f9f9;">
 
-    <children>
-        <VBox spacing="25" alignment="TOP_CENTER"
-              AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-              AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+    <VBox spacing="25" alignment="TOP_CENTER"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 
-            <padding>
-                <Insets top="30" right="40" bottom="30" left="40"/>
-            </padding>
+        <padding>
+            <Insets top="30" right="40" bottom="30" left="40"/>
+        </padding>
 
-            <!-- Title -->
-            <Label text="Add New Employee"
-                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+        <!-- Title -->
+        <Label text="Add New Employee"
+               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
 
-            <!-- Form -->
-            <GridPane hgap="20" vgap="15">
-                <columnConstraints>
-                    <ColumnConstraints minWidth="150" halignment="RIGHT"/>
-                    <ColumnConstraints minWidth="300"/>
-                </columnConstraints>
+        <!-- Form -->
+        <GridPane hgap="20" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints minWidth="150" halignment="RIGHT"/>
+                <ColumnConstraints minWidth="300"/>
+            </columnConstraints>
 
-                <rowConstraints>
-                    <RowConstraints minHeight="35"/>
-                    <RowConstraints minHeight="35"/>
-                    <RowConstraints minHeight="35"/>
-                    <RowConstraints minHeight="35"/>
-                    <RowConstraints minHeight="35"/>
-                    <RowConstraints minHeight="35"/>
-                </rowConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="35"/>
+                <RowConstraints minHeight="35"/>
+                <RowConstraints minHeight="35"/>
+                <RowConstraints minHeight="35"/>
+                <RowConstraints minHeight="35"/>
+                <RowConstraints minHeight="35"/>
+            </rowConstraints>
 
-                <children>
-                    <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                    <TextField fx:id="nameField"
-                               promptText="Enter Full Name"
-                               GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <children>
+                <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="nameField"
+                           promptText="Enter Full Name"
+                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-                    <Label text="Department:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                    <ComboBox fx:id="departmentComboBox"
-                              prefWidth="250"
-                              promptText="Select Department"
-                              GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                <Label text="Department:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <ComboBox fx:id="departmentComboBox"
+                          prefWidth="250"
+                          promptText="Select Department"
+                          GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-                    <Label text="Salary:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                    <TextField fx:id="salaryField"
-                               promptText="e.g. 60000"
-                               GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <Label text="Salary:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <TextField fx:id="salaryField"
+                           promptText="e.g. 60000"
+                           GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-                    <Label text="Performance Rating:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                    <TextField fx:id="performanceRatingField"
-                               promptText="e.g. 4.5"
-                               GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                <Label text="Performance Rating:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <TextField fx:id="performanceRatingField"
+                           promptText="e.g. 4.5"
+                           GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
-                    <Label text="Years of Experience:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-                    <TextField fx:id="yearsOfExperienceField"
-                               promptText="e.g. 5"
-                               GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                <Label text="Years of Experience:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <TextField fx:id="yearsOfExperienceField"
+                           promptText="e.g. 5"
+                           GridPane.rowIndex="4" GridPane.columnIndex="1"/>
 
-                    <Label text="Active:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-                    <CheckBox fx:id="activeCheckBox"
-                              GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-                </children>
-            </GridPane>
+                <Label text="Active:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                <CheckBox fx:id="activeCheckBox"
+                          GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+            </children>
+        </GridPane>
 
-            <!-- Buttons -->
-            <HBox spacing="20" alignment="CENTER">
-                <Button text="Add"
-                        onAction="#handleAddEmployee"
-                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 25; -fx-background-radius: 5;"/>
-                <Button fx:id="cancelButton"
-                        text="Cancel"
-                        onAction="#closeModel"
-                        style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 25; -fx-background-radius: 5;"/>
-            </HBox>
-        </VBox>
-    </children>
+        <!-- Buttons -->
+        <HBox spacing="20" alignment="CENTER">
+            <Button text="Add"
+                    onAction="#handleAddEmployee"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 25; -fx-background-radius: 5;"/>
+            <Button fx:id="cancelButton"
+                    text="Cancel"
+                    onAction="#closeModel"
+                    style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 25; -fx-background-radius: 5;"/>
+        </HBox>
+    </VBox>
 </AnchorPane>

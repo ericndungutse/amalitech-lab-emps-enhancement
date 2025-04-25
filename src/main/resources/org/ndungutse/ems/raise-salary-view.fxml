@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+
+<?import javafx.scene.layout.HBox?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.ndungutse.ems.RaiseSalaryController"
+            prefHeight="300.0" prefWidth="500.0"
+            style="-fx-background-color: #f9f9f9;">
+
+    <VBox spacing="25" alignment="TOP_CENTER"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+
+        <padding>
+            <Insets top="30" right="40" bottom="30" left="40"/>
+        </padding>
+
+        <Label text="Apply Salary Raise"
+               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+        <GridPane hgap="20" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints minWidth="150" halignment="RIGHT"/>
+                <ColumnConstraints minWidth="250"/>
+            </columnConstraints>
+
+            <rowConstraints>
+                <RowConstraints minHeight="35"/>
+                <RowConstraints minHeight="35"/>
+            </rowConstraints>
+
+            <children>
+                <Label text="Percentage Raise:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="percentageField"
+                           promptText="Enter percentage"
+                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Minimum Rating:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="ratingField"
+                           promptText="Enter minimum rating"
+                           GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            </children>
+        </GridPane>
+
+        <HBox spacing="20" alignment="CENTER">
+            <Button text="Apply"
+                    onAction="#handleApplyRaise"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 25; -fx-background-radius: 5;"/>
+            <Button text="Close"
+                    fx:id="cancelButton"
+                    onAction="#handleClose"
+                    style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 25; -fx-background-radius: 5;"/>
+        </HBox>
+    </VBox>
+</AnchorPane>
