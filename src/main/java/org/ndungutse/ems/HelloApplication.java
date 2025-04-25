@@ -41,26 +41,25 @@ public class HelloApplication extends Application {
                 // TODO: Pass only values to the add employee and create
                 // employee from there
 
-                employeeCollection.getAllEmployees(-1);
-                // employeeCollection.addEmployee(new Employee<>(1, "Eric",
-                // Department.IT, 1500, 5, 3, true));
+                // employeeCollection.getAllEmployees(-1);
+                employeeCollection.addEmployee(new Employee<>(1, "Eric",
+                                Department.IT, 1500, 5, 3, true));
 
-                // employeeCollection.updateEmployeeEmployeeDetails(1,
-                // "performanceRating", "");
-                // System.out.println(
-                // employeeCollection.getEmployeeByName("Eric"));
-                // employeeCollection.addEmployee(new Employee<>(2, "Camariza",
-                // Department.FINANCE, 3200, 3.9, 5, true));
-                // employeeCollection.addEmployee(new Employee<>(3, "Lodrigues",
-                // Department.HR, 2700, 4.1, 4, true));
-                // employeeCollection.addEmployee(new Employee<>(4, "Elina",
-                // Department.IT, 8000, 4.8, 6, true));
-                // employeeCollection.addEmployee(new Employee<>(5, "Jean",
-                // Department.HR, 900, 3.3, 1, false));
-                // employeeCollection.addEmployee(new Employee<>(6, "Nadine",
-                // Department.FINANCE, 1200, 4.0, 2, true));
-                // employeeCollection.addEmployee(new Employee<>(7, "Patrick",
-                // Department.IT, 5500, 4.6, 7, true));
+                employeeCollection.addEmployee(new Employee<>(2, "Camariza",
+                                Department.FINANCE, 3200, 3.9, 5, true));
+                employeeCollection.addEmployee(new Employee<>(3, "Lodrigues",
+                                Department.HR, 2700, 4.1, 4, true));
+                employeeCollection.addEmployee(new Employee<>(4, "Elina",
+                                Department.IT, 8000, 4.8, 6, true));
+                employeeCollection.addEmployee(new Employee<>(5, "Jean",
+                                Department.HR, 900, 3.3, 1, false));
+                employeeCollection.addEmployee(new Employee<>(6, "Nadine",
+                                Department.FINANCE, 1200, 4.0, 2, true));
+                employeeCollection.addEmployee(new Employee<>(7, "Patrick",
+                                Department.IT, 5500, 4.6, 7, true));
+
+                System.out.println(employeeCollection
+                                .getEmployeesBySalaryRange(-23, 43));
                 // employeeCollection.addEmployee(new Employee<>(8, "Sandrine",
                 // Department.HR, 2000, 3.6, 3, false));
                 // employeeCollection.addEmployee(new Employee<>(9, "Albert",

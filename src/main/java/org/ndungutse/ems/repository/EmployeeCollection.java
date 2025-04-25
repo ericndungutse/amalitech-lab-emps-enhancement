@@ -173,33 +173,61 @@ public class EmployeeCollection<T> {
 
     // Get employees by department
     public List<Employee<T>> getEmployeesByDepartment(Department department) {
-        List<Employee<T>> departmentEmployees = this.employees.values().stream()
-                .filter((employee) -> employee.getDepartment()
-                        .equals(department))
-                .collect(Collectors.toList());
-
+        List<Employee<T>> departmentEmployees = new ArrayList<>();
+        try {
+            if (department == null) {
+                throw new AppException(
+                        "Error while retrieving employees by department: Department is required!");
+            }
+            departmentEmployees = employees.values().stream()
+                    .filter(e -> department != null
+                            && department.equals(e.getDepartment()))
+                    .collect(Collectors.toList());
+        } catch (AppException e) {
+            // Log the error or handle it as needed
+            System.err.println(e.getMessage());
+        }
         return departmentEmployees;
     }
 
     // Get Employees by name based on a search term
     public List<Employee<T>> getEmployeeByName(String name) {
-        List<Employee<T>> employeesByName = this.employees.values().stream()
-                .filter(employee -> employee.getName().toLowerCase()
-                        .contains(name.toLowerCase()))
-                .collect(Collectors.toList());
+        List<Employee<T>> employeesByName = new ArrayList<>();
+        try {
+            if (name == null)
+                throw new AppException(
+                        "Error while searching employees by name: Name is required");
 
+            employeesByName = employees.values().stream().filter(employee -> {
+                String employeeName = employee.getName();
+                return employeeName != null && employeeName.toLowerCase()
+                        .contains(name.toLowerCase());
+            }).collect(Collectors.toList());
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
         return employeesByName;
     }
 
     // Get EMployees based on salary
     public List<Employee<T>> getEmployeesBySalaryRange(double minSalary,
             double maxSalary) {
-        List<Employee<T>> emp = this.employees.values().stream()
-                .filter(employee -> employee.getSalary() >= minSalary
-                        && employee.getSalary() <= maxSalary)
-                .collect(Collectors.toList());
+        List<Employee<T>> employees = new ArrayList<>();
+        try {
 
-        return emp;
+            Validator.validateSalary(minSalary);
+            Validator.validateSalary(maxSalary);
+
+            employees = this.employees.values().stream()
+                    .filter(employee -> employee.getSalary() >= minSalary
+                            && employee.getSalary() <= maxSalary)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        return employees;
     }
 
     // Employees with minimum performance rating (e.g., rating >= 4.0).
