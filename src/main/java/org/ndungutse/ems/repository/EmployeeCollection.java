@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.ndungutse.ems.AppContext;
 import org.ndungutse.ems.exceptions.AppException;
+import org.ndungutse.ems.exceptions.InvalidInputException;
 import org.ndungutse.ems.exceptions.InvalidSalaryException;
 import org.ndungutse.ems.models.Department;
 import org.ndungutse.ems.models.Employee;
@@ -38,6 +39,10 @@ public class EmployeeCollection<T> {
         } catch (InvalidSalaryException e) {
             System.out.println("{ message: " + e.getMessage()
                     + ", invalidValue: " + e.getInvalidValue() + " }");
+        } catch (InvalidInputException e) {
+            System.out.println(
+                    "{ message: " + e.getMessage() + ", field: " + e.getField()
+                            + ", invalidValue: " + e.getInvalidValue() + " }");
         }
     }
 

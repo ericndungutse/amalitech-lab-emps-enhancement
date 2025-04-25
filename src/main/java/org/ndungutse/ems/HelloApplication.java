@@ -39,7 +39,7 @@ public class HelloApplication extends Application {
 
         public static void main(String[] args) {
                 employeeCollection.addEmployee(new Employee<>(1, "Eric",
-                                Department.IT, -1500, 4.5, 3, true));
+                                Department.IT, 1500, 45, 3, true));
                 // employeeCollection.addEmployee(new Employee<>(2, "Camariza",
                 // Department.FINANCE, 3200, 3.9, 5, true));
                 // employeeCollection.addEmployee(new Employee<>(3, "Lodrigues",
