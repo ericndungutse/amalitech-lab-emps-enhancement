@@ -123,10 +123,22 @@ public class EmployeeCollection<T> {
 
     // Get All employees and display them
     public List<Employee<T>> getAllEmployees() {
-        List<Employee<T>> employeesList = new ArrayList<>(
-                this.employees.values());
-        displayEmployees(employeesList, "All Employees");
-        return employeesList;
+        try {
+
+            List<Employee<T>> employeesList = new ArrayList<>(
+                    this.employees.values());
+
+            if (employeesList.isEmpty()) {
+                throw new AppException("No employees found in the system.");
+            }
+
+            displayEmployees(employeesList, "All Employees");
+            return employeesList;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
     }
 
     // Paginated Get Employees

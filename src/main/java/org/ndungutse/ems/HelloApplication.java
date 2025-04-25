@@ -40,13 +40,15 @@ public class HelloApplication extends Application {
         public static void main(String[] args) {
                 // TODO: Pass only values to the add employee and create
                 // employee from there
-                employeeCollection.addEmployee(new Employee<>(1, "Eric",
-                                Department.IT, 1500, 5, 3, true));
 
-                employeeCollection.updateEmployeeEmployeeDetails(1,
-                                "performanceRating", "");
-                System.out.println(
-                                employeeCollection.getEmployeeByName("Eric"));
+                employeeCollection.getAllEmployees();
+                // employeeCollection.addEmployee(new Employee<>(1, "Eric",
+                // Department.IT, 1500, 5, 3, true));
+
+                // employeeCollection.updateEmployeeEmployeeDetails(1,
+                // "performanceRating", "");
+                // System.out.println(
+                // employeeCollection.getEmployeeByName("Eric"));
                 // employeeCollection.addEmployee(new Employee<>(2, "Camariza",
                 // Department.FINANCE, 3200, 3.9, 5, true));
                 // employeeCollection.addEmployee(new Employee<>(3, "Lodrigues",
