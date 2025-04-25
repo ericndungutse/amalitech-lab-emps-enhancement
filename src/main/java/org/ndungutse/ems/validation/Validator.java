@@ -1,6 +1,7 @@
 package org.ndungutse.ems.validation;
 
 import org.ndungutse.ems.exceptions.AppException;
+import org.ndungutse.ems.exceptions.InvalidSalaryException;
 import org.ndungutse.ems.models.Employee;
 
 public class Validator {
@@ -19,22 +20,29 @@ public class Validator {
         }
 
         if (employee.getSalary() < 0) {
-            throw new AppException("Salary must be a positive number.");
+            throw new InvalidSalaryException(
+                    "Salary must be a positive number.", employee.getSalary());
         }
 
         double rating = employee.getPerformanceRating();
         if (rating < 0 || rating > 5) {
-            throw new AppException("Performance rating must be between 0 and 5.");
+            throw new AppException(
+                    "Performance rating must be between 0 and 5.");
         }
 
         if (employee.getYearsOfExperience() < 0) {
             throw new AppException("Years of experience must be non-negative.");
         }
     }
-    public static <T> void validateRating(Double rating){
-        if(rating < 0 || rating > 5) throw new AppException("Rating should be between 0 and 5 both included");
+
+    public static <T> void validateRating(Double rating) {
+        if (rating < 0 || rating > 5)
+            throw new AppException(
+                    "Rating should be between 0 and 5 both included");
     }
-    public static <T> void validateSalary(Double salary){
-        if(salary <= 0) throw new AppException("Salary should be greater than 0.");
+
+    public static <T> void validateSalary(Double salary) {
+        if (salary <= 0)
+            throw new AppException("Salary should be greater than 0.");
     }
 }

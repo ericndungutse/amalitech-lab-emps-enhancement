@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.ndungutse.ems.AppContext;
 import org.ndungutse.ems.exceptions.AppException;
+import org.ndungutse.ems.exceptions.InvalidSalaryException;
 import org.ndungutse.ems.models.Department;
 import org.ndungutse.ems.models.Employee;
 import org.ndungutse.ems.utils.AppConstants;
@@ -25,16 +26,18 @@ public class EmployeeCollection<T> {
     // Add employee
     public void addEmployee(Employee<T> employee) {
         try {
+
+            // Validate Employee
             Validator.validateNewEmployee(employee);
-            // Check if employee already exists
-            if (this.employees.get(employee.getEmployeeId()) != null)
-                throw new AppException("Employee already exists");
 
             // Save new employee
             this.employees.put(employee.getEmployeeId(), employee);
 
         } catch (AppException e) {
             System.out.println(e.getMessage());
+        } catch (InvalidSalaryException e) {
+            System.out.println("{ message: " + e.getMessage()
+                    + ", invalidValue: " + e.getInvalidValue() + " }");
         }
     }
 
