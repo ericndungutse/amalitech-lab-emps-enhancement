@@ -37,12 +37,14 @@ public class EmployeeCollection<T> {
 
         } catch (AppException e) {
             System.out.println(e.getMessage());
+            throw e;
         } catch (InvalidSalaryException e) {
             System.out.println("{ message: " + e.getMessage()
                     + ", invalidValue: " + e.getInvalidValue() + " }");
+            throw e;
         } catch (InvalidInputException e) {
             System.out.println(e.getMessage());
-            return;
+            throw e;
         }
     }
 
@@ -321,8 +323,9 @@ public class EmployeeCollection<T> {
         Iterator<Employee<T>> iterator = this.employees.values().iterator();
 
         try {
-            Validator.validateDepartment(minRating);
+            Validator.validateRating(minRating);
             Validator.validatePercentage(percentage);
+
             while (iterator.hasNext()) {
                 Employee<T> employee = iterator.next();
                 if (employee.getPerformanceRating() >= minRating) {
@@ -333,6 +336,7 @@ public class EmployeeCollection<T> {
             }
         } catch (InvalidInputException e) {
             System.err.println(e.getMessage());
+            throw e;
         }
 
     }

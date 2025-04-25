@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import org.ndungutse.ems.exceptions.AppException;
+import org.ndungutse.ems.exceptions.InvalidInputException;
 import org.ndungutse.ems.models.Department;
 import org.ndungutse.ems.models.Employee;
 import org.ndungutse.ems.repository.EmployeeCollection;
@@ -31,6 +32,7 @@ public class HelloController {
 
     @FXML
     private ComboBox<Department> departmentComboBox;
+
     @FXML
     private ComboBox<Department> departmentAvgComboBox;
     @FXML
@@ -382,33 +384,32 @@ public class HelloController {
         employeeTable.getItems().setAll(employees);
     }
 
-    public void handleRaiseSalary(ActionEvent event) {
-        
-    }
 
-    public void handleOpenRaiseSalaryModel(ActionEvent event) {
+    public void handleOpenRaiseSalaryModel(ActionEvent event) throws IOException {
         try {
-            // Load the FXML file
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("raise-salary-view.fxml"));
-            Parent root = fxmlLoader.load();
+            // Load the FXML for the popup
+            FXMLLoader fxmlLoader = new FXMLLoader(
+                    getClass().getResource("raise-salary-view.fxml"));
+            Parent popupRoot = fxmlLoader.load();
 
-            // Create the modal stage
-            Stage stage = new Stage();
-            stage.setTitle("Raise Salary");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL); // Makes it modal
-            stage.initOwner(((Node) event.getSource()).getScene().getWindow()); // Set owner
+            // Get the AddEmployee controller
+            RaiseSalaryController raiseSalaryController = fxmlLoader.getController();
+            raiseSalaryController.setHelloController(this);
 
-            // Show the modal and wait
-            stage.showAndWait();
+            // Create a new stage for the popup
+            Stage popupStage = new Stage();
+            popupStage.setTitle("Add New Employee");
+            popupStage.setScene(new Scene(popupRoot));
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setResizable(false);
+
+            // Show the popup and wait
+            popupStage.showAndWait();
+
         } catch (IOException e) {
-            e.printStackTrace(); // Log the error
+            e.printStackTrace();
         }
     }
 
-    public void handleApplyRaise(ActionEvent event) {
-    }
-
-    public void handleClose(ActionEvent event) {
-    }
+    
 }

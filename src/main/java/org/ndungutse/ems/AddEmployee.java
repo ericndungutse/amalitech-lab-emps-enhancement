@@ -7,12 +7,15 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import org.ndungutse.ems.exceptions.AppException;
+import org.ndungutse.ems.exceptions.InvalidInputException;
 import org.ndungutse.ems.models.Department;
 import org.ndungutse.ems.models.Employee;
 import org.ndungutse.ems.repository.EmployeeCollection;
 import org.ndungutse.ems.utils.DialogUtility;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddEmployee implements Initializable {
@@ -28,8 +31,6 @@ public class AddEmployee implements Initializable {
     private TextField yearsOfExperienceField;
     @FXML
     private CheckBox activeCheckBox;
-    @FXML
-    private Button addButton;
     @FXML
     private Button cancelButton;
     private HelloController helloController;
@@ -68,14 +69,18 @@ public class AddEmployee implements Initializable {
             employeeCollection.addEmployee(employee);
 
             this.closeModel();
-            helloController.getEmployees(department, null, null, null, 0);
             DialogUtility.showAlert("New employee",
                     "Employee added successful");
+           List<Employee<Integer>> employees = new ArrayList<>(helloController.getEmployees(null, null, null, null, 0));
+           helloController.displayEmployees(employees);
+
         } catch (AppException e) {
             DialogUtility.showErrorAlert("Error", e.getMessage());
         } catch (NumberFormatException e) {
             DialogUtility.showErrorAlert("Invalid Input",
                     "Invalid Input: " + e.getMessage());
+        }catch (InvalidInputException e) {
+            DialogUtility.showErrorAlert("Error", e.toString());
         } catch (Exception e) {
             DialogUtility.showErrorAlert("Error",
                     "Somthing went wrong! Try again later.");

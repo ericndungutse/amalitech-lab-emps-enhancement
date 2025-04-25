@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.ndungutse.ems.HelloController"
+            fx:controller="org.ndungutse.ems.RaiseSalaryController"
             prefHeight="300.0" prefWidth="500.0"
             style="-fx-background-color: #f9f9f9;">
 
@@ -55,6 +55,7 @@
                     onAction="#handleApplyRaise"
                     style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 25; -fx-background-radius: 5;"/>
             <Button text="Close"
+                    fx:id="cancelButton"
                     onAction="#handleClose"
                     style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 25; -fx-background-radius: 5;"/>
         </HBox>
