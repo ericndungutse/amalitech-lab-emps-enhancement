@@ -106,6 +106,6 @@ public class HelloApplication extends Application {
                 // Department.IT, 1800, 3.4, 1, false));
                 // employeeCollection.addEmployee(new Employee<>(30, "Lionel",
                 // Department.HR, 5000, 4.6, 7, true));
-                // launch();
+                 launch();
         }
 }

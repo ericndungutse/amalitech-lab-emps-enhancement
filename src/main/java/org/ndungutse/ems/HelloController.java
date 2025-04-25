@@ -3,6 +3,7 @@ package org.ndungutse.ems;
 import java.io.IOException;
 import java.util.List;
 
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import org.ndungutse.ems.exceptions.AppException;
 import org.ndungutse.ems.models.Department;
@@ -74,35 +75,54 @@ public class HelloController {
 
     @FXML
     public void initialize() {
-        employeeTable.setColumnResizePolicy(
-                TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
-        departmentAvgComboBox.getItems().addAll(Department.values());
-        departmentComboBox.getItems().addAll(Department.values());
-        idColumn.setCellValueFactory(data -> new SimpleIntegerProperty(
-                data.getValue().getEmployeeId()).asObject());
-        nameColumn.setCellValueFactory(
-                data -> new SimpleStringProperty(data.getValue().getName()));
-        departmentColumn.setCellValueFactory(data -> new SimpleStringProperty(
-                data.getValue().getDepartment().toString()));
-        salaryColumn.setCellValueFactory(
-                data -> new SimpleDoubleProperty(data.getValue().getSalary())
-                        .asObject());
-        ratingColumn.setCellValueFactory(data -> new SimpleDoubleProperty(
-                data.getValue().getPerformanceRating()).asObject());
-        experienceColumn.setCellValueFactory(data -> new SimpleIntegerProperty(
-                data.getValue().getYearsOfExperience()).asObject());
-        statusColumn.setCellValueFactory(
-                data -> new SimpleBooleanProperty(data.getValue().isActive())
-                        .asObject());
+        if (employeeTable != null) {
+            employeeTable.setColumnResizePolicy(
+                    TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        }
 
-        // Load employees from your collection
-        Department department = departmentComboBox.getValue();
-        Double minSalary = parseDoubleOrNull(minSalaryField.getText());
-        Double maxSalary = parseDoubleOrNull(maxSalaryField.getText());
-        Double minRating = parseDoubleOrNull(minRatingField.getText());
-        List<Employee<Integer>> employees = getEmployees(department, minSalary,
-                maxSalary, minRating, 1);
-        displayEmployees(employees);
+        if (departmentComboBox != null) {
+            departmentComboBox.getItems().addAll(Department.values());
+        }
+
+        if (departmentAvgComboBox != null) {
+            departmentAvgComboBox.getItems().addAll(Department.values());
+        }
+
+        if (nameColumn != null)
+            nameColumn.setCellValueFactory(
+                    data -> new SimpleStringProperty(data.getValue().getName()));
+
+        if (departmentColumn != null)
+            departmentColumn.setCellValueFactory(
+                    data -> new SimpleStringProperty(data.getValue().getDepartment().toString()));
+
+        if (salaryColumn != null)
+            salaryColumn.setCellValueFactory(
+                    data -> new SimpleDoubleProperty(data.getValue().getSalary()).asObject());
+
+        if (ratingColumn != null)
+            ratingColumn.setCellValueFactory(
+                    data -> new SimpleDoubleProperty(data.getValue().getPerformanceRating()).asObject());
+
+        if (experienceColumn != null)
+            experienceColumn.setCellValueFactory(
+                    data -> new SimpleIntegerProperty(data.getValue().getYearsOfExperience()).asObject());
+
+        if (statusColumn != null)
+            statusColumn.setCellValueFactory(
+                    data -> new SimpleBooleanProperty(data.getValue().isActive()).asObject());
+
+        // Optional: safely call these methods only if needed controls are present
+        if (departmentComboBox != null && minSalaryField != null &&
+                maxSalaryField != null && minRatingField != null) {
+            Department department = departmentComboBox.getValue();
+            Double minSalary = parseDoubleOrNull(minSalaryField.getText());
+            Double maxSalary = parseDoubleOrNull(maxSalaryField.getText());
+            Double minRating = parseDoubleOrNull(minRatingField.getText());
+
+            List<Employee<Integer>> employees = getEmployees(department, minSalary, maxSalary, minRating, 1);
+            displayEmployees(employees);
+        }
     }
 
     public void handleNewEmployee(ActionEvent event) throws IOException {
@@ -360,5 +380,35 @@ public class HelloController {
         if (employees == null)
             return;
         employeeTable.getItems().setAll(employees);
+    }
+
+    public void handleRaiseSalary(ActionEvent event) {
+        
+    }
+
+    public void handleOpenRaiseSalaryModel(ActionEvent event) {
+        try {
+            // Load the FXML file
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("raise-salary-view.fxml"));
+            Parent root = fxmlLoader.load();
+
+            // Create the modal stage
+            Stage stage = new Stage();
+            stage.setTitle("Raise Salary");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // Makes it modal
+            stage.initOwner(((Node) event.getSource()).getScene().getWindow()); // Set owner
+
+            // Show the modal and wait
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace(); // Log the error
+        }
+    }
+
+    public void handleApplyRaise(ActionEvent event) {
+    }
+
+    public void handleClose(ActionEvent event) {
     }
 }

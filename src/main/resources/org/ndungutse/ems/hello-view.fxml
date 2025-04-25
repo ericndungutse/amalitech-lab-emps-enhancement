@@ -33,11 +33,10 @@
 
             <!-- Employee Table -->
             <TableView fx:id="employeeTable"  VBox.vgrow="ALWAYS"
-           style="-fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8"
-           minWidth="0.0" minHeight="0.0"
-           maxWidth="Infinity" maxHeight="Infinity">
+                       style="-fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8"
+                       minWidth="0.0" minHeight="0.0"
+                       maxWidth="Infinity" maxHeight="Infinity">
                 <columns>
-                    <TableColumn fx:id="idColumn" prefWidth="25" text="ID" />
                     <TableColumn fx:id="nameColumn" prefWidth="70" text="Name" />
                     <TableColumn fx:id="departmentColumn" prefWidth="70" text="Department" />
                     <TableColumn fx:id="salaryColumn" prefWidth="70" text="Salary" />
@@ -58,6 +57,7 @@
             <HBox alignment="CENTER_LEFT" spacing="10">
                 <Button onAction="#handleNewEmployee" style="-fx-background-color: #3498db; -fx-text-fill: white;" text="Add Employee" />
                 <Button onAction="#handleDeleteEmployee" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Delete Selected" />
+                <Button onAction="#handleOpenRaiseSalaryModel" style="-fx-background-color: #27ae60; -fx-text-fill: white;" text="Raise Salary" />
 
                 <Region HBox.hgrow="ALWAYS" />
 
