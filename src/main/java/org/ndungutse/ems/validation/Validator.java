@@ -30,18 +30,51 @@ public class Validator {
     }
 
     // Rating validator
-    public static void validateRating(Double rating) {
-        if (rating < 0 || rating > 5)
-            throw new InvalidInputException(
-                    "Invalid input: " + rating + " should be between 0 and 5",
+    public static void validateRating(Object rating) {
+        double newRating;
+        if (rating == null || rating == "") {
+            throw new InvalidInputException("Rating is required",
                     "performanceRating");
+        }
+
+        if (rating instanceof Integer) {
+            newRating = ((Integer) rating).doubleValue();
+        } else if (rating instanceof Double) {
+            newRating = (double) rating;
+        } else {
+            throw new InvalidInputException(
+                    "Invalid input: " + rating + ". Rating must be a number",
+                    "performanceRating");
+        }
+
+        if (newRating < 0 || newRating > 5)
+            throw new InvalidInputException(
+                    "Invalid input: " + rating
+                            + ". Rating should be between 0 and 5",
+                    "performanceRating");
+
     }
 
     // Salary Validator
-    public static void validateSalary(Double salary) {
-        if (salary <= 0)
+    public static void validateSalary(Object salary) {
+        double newSalary;
+        if (salary == null || salary == "") {
+            throw new InvalidInputException("Salary is required", "salary");
+        }
+
+        if (salary instanceof Integer) {
+            newSalary = ((Integer) salary).doubleValue();
+        } else if (salary instanceof Double) {
+            newSalary = (double) salary;
+        } else {
+            throw new InvalidInputException(
+                    "Invalid input: " + salary + ". Salary must be a number",
+                    "salary");
+        }
+
+        if (newSalary <= 0)
             throw new InvalidInputException("Invalid input: " + salary
-                    + ". Salary should be greater than 0", "Salary");
+                    + ". Salary should be greater than 0", "salary");
     }
 
     // Name Validator
@@ -62,6 +95,7 @@ public class Validator {
 
     }
 
+    // Experience validator
     public static void validateExperience(Object newValue) {
         if (newValue instanceof Number) {
             double value = ((Number) newValue).doubleValue();

@@ -44,7 +44,7 @@ public class HelloApplication extends Application {
                                 Department.IT, 1500, 5, 3, true));
 
                 employeeCollection.updateEmployeeEmployeeDetails(1,
-                                "yearsOfExperience", 10);
+                                "performanceRating", "");
                 System.out.println(
                                 employeeCollection.getEmployeeByName("Eric"));
                 // employeeCollection.addEmployee(new Employee<>(2, "Camariza",

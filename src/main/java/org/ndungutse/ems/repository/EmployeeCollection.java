@@ -90,30 +90,20 @@ public class EmployeeCollection<T> {
                 employeeToUpdate.setDepartment((Department) newValue);
                 break;
             case "salary":
-                double newSalary;
-                if (newValue instanceof Integer) {
-                    newSalary = ((Integer) newValue).doubleValue();
-                } else if (newValue instanceof Double) {
-                    newSalary = (double) newValue;
-                } else {
-                    throw new IllegalArgumentException(
-                            "Unsupported type of salary.");
-                }
-                Validator.validateSalary(newSalary);
+                Validator.validateSalary(newValue);
+                double newSalary = newValue instanceof Integer
+                        ? ((Integer) newValue).doubleValue()
+                        : (double) newValue;
+
                 employeeToUpdate.setSalary(newSalary);
                 break;
             case "performanceRating":
-                double newRating;
-                if (newValue instanceof Integer) {
-                    newRating = ((Integer) newValue).doubleValue();
-                } else if (newValue instanceof Double) {
-                    newRating = (double) newValue;
-                } else {
-                    throw new IllegalArgumentException(
-                            "Unsupported type of salary.");
-                }
-                Validator.validateRating(newRating);
-                employeeToUpdate.setPerformanceRating((double) newValue);
+                Validator.validateRating(newValue);
+
+                double newRating = newValue instanceof Integer
+                        ? ((Integer) newValue).doubleValue()
+                        : (double) newValue;
+                employeeToUpdate.setPerformanceRating((double) newRating);
                 break;
             case "yearsOfExperience":
                 // Validator
