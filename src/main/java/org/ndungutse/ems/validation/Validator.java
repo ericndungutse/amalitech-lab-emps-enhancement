@@ -1,6 +1,7 @@
 package org.ndungutse.ems.validation;
 
 import org.ndungutse.ems.exceptions.AppException;
+import org.ndungutse.ems.exceptions.InvalidDepartmentException;
 import org.ndungutse.ems.exceptions.InvalidSalaryException;
 import org.ndungutse.ems.models.Employee;
 
@@ -15,8 +16,10 @@ public class Validator {
             throw new AppException("Employee name cannot be empty.");
         }
 
+        // Check if Department is present
         if (employee.getDepartment() == null) {
-            throw new AppException("Department must be selected.");
+            throw new InvalidDepartmentException(employee.getDepartment(),
+                    "Department must be selected.");
         }
 
         if (employee.getSalary() < 0) {
