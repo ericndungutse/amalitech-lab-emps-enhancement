@@ -5,6 +5,7 @@ import org.ndungutse.ems.exceptions.InvalidInputException;
 import org.ndungutse.ems.models.Department;
 import org.ndungutse.ems.models.Employee;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -183,4 +184,51 @@ class EmployeeCollectionTest {
 
         assertEquals("Error while retrieving employees by department: Department is required!", exception.getMessage());
     }
+
+    // Verify getEmployeesByDepartment
+    @Test
+    void getEmployeesByDepartment_shouldReturnEmployeesInGivenDepartment() {
+        String employeeId1 = collection.generateNewEmployeeId();
+        Employee<String> employee1 = new Employee<>(
+                employeeId1,
+                "Eric Tuyizere",
+                Department.IT,
+                5000,
+                4.5,
+                2,
+                true
+        );
+
+        String employeeId2 = collection.generateNewEmployeeId();
+        Employee<String> employee2 = new Employee<>(
+                employeeId2,
+                "Alice Doe",
+                Department.HR,
+                4000,
+                4.0,
+                3,
+                true
+        );
+
+        String employeeId3 = collection.generateNewEmployeeId();
+        Employee<String> employee3 = new Employee<>(
+                employeeId3,
+                "John Smith",
+                Department.IT,
+                5500,
+                4.2,
+                5,
+                true
+        );
+
+        collection.addEmployee(employee1);
+        collection.addEmployee(employee2);
+        collection.addEmployee(employee3);
+
+        List<Employee<String>> itEmployees = collection.getEmployeesByDepartment(Department.IT);
+
+        assertEquals(2, itEmployees.size());
+        assertTrue(itEmployees.stream().allMatch(e -> e.getDepartment() == Department.IT));
+    }
+
 }
