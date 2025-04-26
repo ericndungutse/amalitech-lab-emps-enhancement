@@ -29,7 +29,6 @@ public class RaiseSalaryController {
 
     public void handleApplyRaise(ActionEvent event) {
         try {
-            System.out.println("CLicked");
             String percentageText = percentageField.getText();
             String ratingText = ratingField.getText();
 
@@ -64,7 +63,7 @@ public class RaiseSalaryController {
             DialogUtility.showErrorAlert("Invalid Format",
                     "Please enter valid numbers for percentage and rating.");
         } catch (InvalidInputException e) {
-            DialogUtility.showErrorAlert("Error", e.toString());
+            DialogUtility.showErrorAlert("Error", e.getMessage());
         } catch (Exception e) {
             DialogUtility.showErrorAlert("Error", e.getMessage());
             e.printStackTrace();
