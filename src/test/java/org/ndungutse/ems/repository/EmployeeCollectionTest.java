@@ -13,6 +13,7 @@ class EmployeeCollectionTest {
 
     private final EmployeeCollection<String> collection = new EmployeeCollection<>();
 
+    // Verify Get employee by id
     @Test
     void getEmployeeById() {
         // Arrange
@@ -41,7 +42,7 @@ class EmployeeCollectionTest {
         assertEquals(Department.HR, retrievedEmployee.getDepartment());
     }
 
-
+    // Verify add employee
     @Test
     void addEmployee() {
         // Arrange
@@ -91,4 +92,28 @@ class EmployeeCollectionTest {
 
         assertEquals("Employee name cannot be empty", exception.getMessage());
     }
+
+    // Verify exception thrown when salary is negative
+    @Test
+    void addEmployee_shouldThrowException_whenSalaryIsNegative() {
+        // Arrange
+        String employeeId = collection.generateNewEmployeeId();
+        Employee<String> employee = new Employee<>(
+                employeeId,
+                "Eric Tuyizere",
+                Department.IT,
+                -1000, // negative salary
+                4.5,
+                2,
+                true
+        );
+
+        InvalidInputException exception = assertThrows(InvalidInputException.class, () -> {
+            collection.addEmployee(employee);
+        });
+
+        assertTrue(exception.getMessage().contains("Salary should be greater than 0"));
+    }
+
+
 }
