@@ -152,4 +152,35 @@ class EmployeeCollectionTest {
 
         assertTrue(exception.getMessage().contains("Experience value cannot be less than zero"));
     }
+
+    // Verify exception is thrown when department is null
+    @Test
+    void addEmployee_shouldThrowException_whenDepartmentIsNull() {
+        String employeeId = collection.generateNewEmployeeId();
+        Employee<String> employee = new Employee<>(
+                employeeId,
+                "Eric Tuyizere",
+                null,
+                5000,
+                4.0,
+                2,
+                true
+        );
+
+        InvalidInputException exception = assertThrows(InvalidInputException.class, () -> {
+            collection.addEmployee(employee);
+        });
+
+        assertEquals("Department cannot be null", exception.getMessage());
+    }
+
+    // Verify search employee by department throws an exception when department is missing
+    @Test
+    void searchEmployeesByDepartment_shouldThrowException_WhenDepartmentIsNull(){
+        InvalidInputException exception = assertThrows(InvalidInputException.class, ()->{
+            collection.getEmployeesByDepartment(null);
+        });
+
+        assertEquals("Error while retrieving employees by department: Department is required!", exception.getMessage());
+    }
 }
