@@ -115,5 +115,25 @@ class EmployeeCollectionTest {
         assertTrue(exception.getMessage().contains("Salary should be greater than 0"));
     }
 
+    // Verify addEmployee throws exception when rating is not between 0-5
+    @Test
+    void addEmployee_shouldThrowException_whenRatingIsOutOfBounds() {
+        // Arrange
+        String employeeId = collection.generateNewEmployeeId();
+        Employee<String> employee = new Employee<>(
+                employeeId,
+                "Eric Tuyizere",
+                Department.IT,
+                5000,
+                6.0, // invalid rating > 5
+                2,
+                true
+        );
 
+        InvalidInputException exception = assertThrows(InvalidInputException.class, () -> {
+            collection.addEmployee(employee);
+        });
+
+        assertTrue(exception.getMessage().contains("Rating should be between 0 and 5"));
+    }
 }
