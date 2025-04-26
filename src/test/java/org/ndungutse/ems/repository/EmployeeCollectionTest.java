@@ -10,10 +10,40 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EmployeeCollectionTest {
 
+    private final EmployeeCollection<String> collection = new EmployeeCollection<>();
+
+    @Test
+    void getEmployeeById() {
+        // Arrange
+        String employeeId = collection.generateNewEmployeeId();
+        Employee<String> employee = new Employee<>(
+                employeeId,
+                "Jane Doe",
+                Department.HR,
+                4500,
+                4.0,
+                3,
+                true
+        );
+        collection.addEmployee(employee); // Add to collection first
+
+        // Act
+        Employee<String> retrievedEmployee = collection.getEmployeeById(employeeId);
+
+        // Assert
+        assertNotNull(retrievedEmployee);
+        assertEquals(employeeId, retrievedEmployee.getEmployeeId());
+        assertEquals("Jane Doe", retrievedEmployee.getName());
+        assertEquals(4500, retrievedEmployee.getSalary());
+        assertEquals(3, retrievedEmployee.getYearsOfExperience());
+        assertEquals(4.0, retrievedEmployee.getPerformanceRating());
+        assertEquals(Department.HR, retrievedEmployee.getDepartment());
+    }
+
+
     @Test
     void addEmployee() {
         // Arrange
-        EmployeeCollection<String> collection = new EmployeeCollection<>();
         String employeeId =  collection.generateNewEmployeeId(); // UUID as String
         Employee<String> employee = new Employee<>(
                 employeeId,
