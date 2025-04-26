@@ -231,4 +231,30 @@ class EmployeeCollectionTest {
         assertTrue(itEmployees.stream().allMatch(e -> e.getDepartment() == Department.IT));
     }
 
+    // Verify removeEmployee works and employee no longer exists in the collection
+    @Test
+    void removeEmployee_shouldDeleteEmployeeFromCollection() {
+        // Arrange
+        String employeeId = collection.generateNewEmployeeId();
+        Employee<String> employee = new Employee<>(
+                employeeId,
+                "Eric Tuyizere",
+                Department.IT,
+                5000,
+                4.5,
+                2,
+                true
+        );
+        collection.addEmployee(employee);
+
+        // Pre-check: make sure the employee is added
+        assertNotNull(collection.getEmployeeById(employeeId));
+
+        // Act
+        collection.removeEmployee(employeeId);
+
+        // Assert
+        Employee<String> deletedEmployee = collection.getEmployeeById(employeeId);
+        assertNull(deletedEmployee, "Employee should be null after being removed");
+    }
 }
