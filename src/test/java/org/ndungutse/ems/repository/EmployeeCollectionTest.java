@@ -16,7 +16,6 @@ class EmployeeCollectionTest {
     // Verify Get employee by id
     @Test
     void getEmployeeById() {
-        // Arrange
         String employeeId = collection.generateNewEmployeeId();
         Employee<String> employee = new Employee<>(
                 employeeId,
@@ -45,7 +44,6 @@ class EmployeeCollectionTest {
     // Verify add employee
     @Test
     void addEmployee() {
-        // Arrange
         String employeeId =  collection.generateNewEmployeeId(); // UUID as String
         Employee<String> employee = new Employee<>(
                 employeeId,
@@ -74,7 +72,6 @@ class EmployeeCollectionTest {
     // Missing Name
     @Test
     void addEmployee_shouldThrowException_whenNameIsBlank() {
-        // Arrange
         String employeeId = collection.generateNewEmployeeId();
         Employee<String> employee = new Employee<>(
                 employeeId,
@@ -96,7 +93,6 @@ class EmployeeCollectionTest {
     // Verify exception thrown when salary is negative
     @Test
     void addEmployee_shouldThrowException_whenSalaryIsNegative() {
-        // Arrange
         String employeeId = collection.generateNewEmployeeId();
         Employee<String> employee = new Employee<>(
                 employeeId,
@@ -118,7 +114,6 @@ class EmployeeCollectionTest {
     // Verify addEmployee throws exception when rating is not between 0-5
     @Test
     void addEmployee_shouldThrowException_whenRatingIsOutOfBounds() {
-        // Arrange
         String employeeId = collection.generateNewEmployeeId();
         Employee<String> employee = new Employee<>(
                 employeeId,
@@ -135,5 +130,26 @@ class EmployeeCollectionTest {
         });
 
         assertTrue(exception.getMessage().contains("Rating should be between 0 and 5"));
+    }
+
+    // Verify an exception is thrown when experience is negative
+    @Test
+    void addEmployee_shouldThrowException_whenExperienceIsNegative() {
+        String employeeId = collection.generateNewEmployeeId();
+        Employee<String> employee = new Employee<>(
+                employeeId,
+                "Eric Tuyizere",
+                Department.IT,
+                5000,
+                4.0,
+                -2,
+                true
+        );
+
+        InvalidInputException exception = assertThrows(InvalidInputException.class, () -> {
+            collection.addEmployee(employee);
+        });
+
+        assertTrue(exception.getMessage().contains("Experience value cannot be less than zero"));
     }
 }
