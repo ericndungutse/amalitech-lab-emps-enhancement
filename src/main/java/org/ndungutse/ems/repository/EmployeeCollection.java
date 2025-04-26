@@ -396,4 +396,17 @@ public class EmployeeCollection<T> {
         return "EmployeeCollection [employees=" + employees + "]";
     }
 
+    public Employee<T> getEmployeeById(T employeeId) {
+        Employee<T> employee;
+        try{
+             employee = this.employees.get(employeeId);
+            if(employee == null){
+                throw new EmployeeNotFoundException(String.format("Employee with ID: %s not found",employeeId));
+            }
+        }catch (EmployeeNotFoundException e){
+           AppContext.logger.severe(e.getMessage());
+           return  null;
+        }
+        return employee;
+    }
 }

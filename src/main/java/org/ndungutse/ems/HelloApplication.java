@@ -1,6 +1,7 @@
 package org.ndungutse.ems;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.ndungutse.ems.models.Department;
 import org.ndungutse.ems.models.Employee;
@@ -65,6 +66,10 @@ public class HelloApplication extends Application {
                                 employeeCollection.generateNewEmployeeId(),
                                 "Patrick", Department.IT, 5500, 4.6, 7, true));
 
+               List<Employee<String>> nadine =  employeeCollection.getEmployeeByName("Nadine");
+                System.out.println(employeeCollection.getEmployeeById(nadine.getFirst().getEmployeeId()));
+
+
                 // employeeCollection.getEmployeesByPerformanceRating(-2);
                 // employeeCollection.addEmployee(new Employee<>(7, "",
                 // Department.IT, 5500, 4.6, 7, true));
@@ -115,6 +120,6 @@ public class HelloApplication extends Application {
                 // Department.IT, 1800, 3.4, 1, false));
                 // employeeCollection.addEmployee(new Employee<>(30, "Lionel",
                 // Department.HR, 5000, 4.6, 7, true));
-                launch();
+//                launch();
         }
 }
