@@ -38,7 +38,7 @@ public class AddEmployee implements Initializable {
             .getEmployeeCollection();
 
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Initializing...");
+        AppContext.logger.info("Initializing...");
         departmentComboBox.getItems().addAll(Department.values());
     }
 
@@ -79,12 +79,12 @@ public class AddEmployee implements Initializable {
             DialogUtility.showErrorAlert("Error", e.getMessage());
         } catch (NumberFormatException e) {
             DialogUtility.showErrorAlert("Invalid Input",
-                    "Invalid Input: " + e.getMessage());
+                    "Invalid input " + e.getMessage());
         } catch (InvalidInputException e) {
-            DialogUtility.showErrorAlert("Error", e.toString());
+            DialogUtility.showErrorAlert("Error", e.getMessage());
         } catch (Exception e) {
             DialogUtility.showErrorAlert("Error",
-                    "Somthing went wrong! Try again later.");
+                    "Something went wrong! Try again later.");
         }
 
     }

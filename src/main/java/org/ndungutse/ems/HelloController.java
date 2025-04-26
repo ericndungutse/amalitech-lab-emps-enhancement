@@ -243,7 +243,7 @@ public class HelloController {
                     minSalary, maxSalary, minRating, currentPage);
 
             displayEmployees(filtered);
-        } catch (AppException e) {
+        } catch (AppException | InvalidInputException e) {
             DialogUtility.showErrorAlert("Filtering Error", e.getMessage());
         }
     }
