@@ -34,7 +34,7 @@ public class AddEmployee implements Initializable {
     @FXML
     private Button cancelButton;
     private HelloController helloController;
-    private final EmployeeCollection<Integer> employeeCollection = AppContext
+    private final EmployeeCollection<String> employeeCollection = AppContext
             .getEmployeeCollection();
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -61,7 +61,7 @@ public class AddEmployee implements Initializable {
                 throw new AppException("All fields must be filled.");
             }
 
-            Employee<Integer> employee = new Employee<>(
+            Employee<String> employee = new Employee<>(
                     employeeCollection.generateNewEmployeeId(), name,
                     department, Double.parseDouble(salaryText),
                     Double.parseDouble(ratingText),
@@ -71,15 +71,16 @@ public class AddEmployee implements Initializable {
             this.closeModel();
             DialogUtility.showAlert("New employee",
                     "Employee added successful");
-           List<Employee<Integer>> employees = new ArrayList<>(helloController.getEmployees(null, null, null, null, 0));
-           helloController.displayEmployees(employees);
+            List<Employee<String>> employees = new ArrayList<>(
+                    helloController.getEmployees(null, null, null, null, 0));
+            helloController.displayEmployees(employees);
 
         } catch (AppException e) {
             DialogUtility.showErrorAlert("Error", e.getMessage());
         } catch (NumberFormatException e) {
             DialogUtility.showErrorAlert("Invalid Input",
                     "Invalid Input: " + e.getMessage());
-        }catch (InvalidInputException e) {
+        } catch (InvalidInputException e) {
             DialogUtility.showErrorAlert("Error", e.toString());
         } catch (Exception e) {
             DialogUtility.showErrorAlert("Error",

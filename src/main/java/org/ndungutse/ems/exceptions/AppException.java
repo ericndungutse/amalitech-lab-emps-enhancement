@@ -6,6 +6,6 @@ public class AppException extends RuntimeException {
     }
 
     public String getMessage() {
-        return "{ message: " + super.getMessage() + " }";
+        return  super.getMessage();
     }
 }

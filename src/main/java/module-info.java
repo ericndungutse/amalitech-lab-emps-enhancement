@@ -11,6 +11,7 @@ module org.ndungutse.ems {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.desktop;
+    requires java.logging;
 
     opens org.ndungutse.ems to javafx.fxml;
     exports org.ndungutse.ems;

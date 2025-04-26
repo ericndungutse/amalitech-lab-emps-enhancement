@@ -2,6 +2,7 @@ package org.ndungutse.ems.repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -18,32 +19,25 @@ import org.ndungutse.ems.utils.AppConstants;
 import org.ndungutse.ems.validation.Validator;
 
 public class EmployeeCollection<T> {
-    private HashMap<T, Employee<T>> employees = new HashMap<>();
-    private int pageSize = AppConstants.PAGE_SIZE; // Default page size
+    private final HashMap<T, Employee<T>> employees = new HashMap<>();
+    private final int pageSize = AppConstants.PAGE_SIZE; // Default page size
 
-    public int generateNewEmployeeId() {
-        return AppContext.getEmployeeCollection().getAllEmployees().size() + 1;
+    public String generateNewEmployeeId() {
+        return UUID.randomUUID().toString();
     }
 
     // Add employee
     public void addEmployee(Employee<T> employee) {
         try {
-
             // Validate Employee
             Validator.validateNewEmployee(employee);
 
             // Save new employee
             this.employees.put(employee.getEmployeeId(), employee);
 
-        } catch (AppException e) {
-            System.out.println(e.getMessage());
-            throw e;
-        } catch (InvalidSalaryException e) {
-            System.out.println("{ message: " + e.getMessage()
-                    + ", invalidValue: " + e.getInvalidValue() + " }");
-            throw e;
-        } catch (InvalidInputException e) {
-            System.out.println(e.getMessage());
+        } catch (AppException | InvalidSalaryException
+                | InvalidInputException e) {
+            AppContext.logger.severe(e.getMessage());
             throw e;
         }
     }
@@ -59,7 +53,7 @@ public class EmployeeCollection<T> {
             // Remove the employee
             employees.remove(employeeId);
         } catch (EmployeeNotFoundException e) {
-            System.out.println(e.getMessage());
+            AppContext.logger.severe(e.getMessage());
         }
     }
 
@@ -119,9 +113,9 @@ public class EmployeeCollection<T> {
                 throw new AppException("Invalid field.");
             }
         } catch (InvalidInputException e) {
-            System.out.println(e.getMessage());
+            AppContext.logger.severe(e.getMessage());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            AppContext.logger.severe(e.getMessage());
         }
     }
 
@@ -136,10 +130,9 @@ public class EmployeeCollection<T> {
                 throw new AppException("No employees found in the system.");
             }
 
-            displayEmployees(employeesList, "All Employees");
             return employeesList;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            AppContext.logger.severe(e.getMessage());
         }
 
         return null;
@@ -166,10 +159,10 @@ public class EmployeeCollection<T> {
             }
 
             List<Employee<T>> page = allEmployees.subList(fromIndex, toIndex);
-            displayEmployees(page, "Employees - Page " + pageNumber);
+
             return page;
         } catch (AppException e) {
-            System.out.println(e.getMessage());
+            AppContext.logger.severe(e.getMessage());
         }
 
         return null;
@@ -244,7 +237,7 @@ public class EmployeeCollection<T> {
                     .collect(Collectors.toList());
 
         } catch (InvalidInputException e) {
-            System.out.println(e.getMessage());
+            AppContext.logger.severe(e.getMessage());
         }
         return employees;
     }
@@ -289,7 +282,7 @@ public class EmployeeCollection<T> {
         List<Employee<T>> employeesList = this.employees.values().stream()
                 .collect(Collectors.toList());
         Collections.sort(employeesList);
-        displayEmployees(employeesList, "Sorted Employees by Experience");
+
         return employeesList;
     }
 
@@ -299,7 +292,7 @@ public class EmployeeCollection<T> {
                 .collect(Collectors.toList());
         employeesList.sort(
                 (e1, e2) -> Double.compare(e2.getSalary(), e1.getSalary()));
-        displayEmployees(employeesList, "Sorted Employees by Salary");
+
         return employeesList;
     }
 
@@ -310,8 +303,6 @@ public class EmployeeCollection<T> {
         Collections.sort(employeesList, (e1, e2) -> Double
                 .compare(e2.getPerformanceRating(), e1.getPerformanceRating()));
 
-        displayEmployees(employeesList,
-                "Sorted Employees by Performance Rating");
         return employeesList;
     }
 
@@ -367,7 +358,7 @@ public class EmployeeCollection<T> {
                     .average().orElse(0.0);
 
         } catch (InvalidInputException e) {
-            System.out.println(e.getMessage());
+            AppContext.logger.severe(e.getMessage());
         }
 
         return avg;
