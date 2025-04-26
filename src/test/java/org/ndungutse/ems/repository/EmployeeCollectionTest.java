@@ -1,6 +1,7 @@
 package org.ndungutse.ems.repository;
 
 import org.junit.jupiter.api.Test;
+import org.ndungutse.ems.exceptions.InvalidInputException;
 import org.ndungutse.ems.models.Department;
 import org.ndungutse.ems.models.Employee;
 
@@ -67,5 +68,27 @@ class EmployeeCollectionTest {
         assertEquals(2, savedEmployee.getYearsOfExperience());
         assertEquals(4.5, savedEmployee.getPerformanceRating());
         assertEquals(Department.IT, savedEmployee.getDepartment());
+    }
+
+    // Missing Name
+    @Test
+    void addEmployee_shouldThrowException_whenNameIsBlank() {
+        // Arrange
+        String employeeId = collection.generateNewEmployeeId();
+        Employee<String> employee = new Employee<>(
+                employeeId,
+                " ", // blank name
+                Department.IT,
+                5000,
+                4.5,
+                2,
+                true
+        );
+
+        InvalidInputException exception = assertThrows(InvalidInputException.class, () -> {
+            collection.addEmployee(employee);
+        });
+
+        assertEquals("Employee name cannot be empty", exception.getMessage());
     }
 }
