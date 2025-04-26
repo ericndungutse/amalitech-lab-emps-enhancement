@@ -1,6 +1,6 @@
 # Employee Management System
 
-[![Build and Test](https://github.com/ericndungutse/amalitech-lab-emps-enhancement/actions/workflows/build_and_test.yml/badge.svg)](https://github.com/ericndungutse/amalitech-lab-emps-enhancement/actions/workflows/build_and_test.yml)
+[![build_and_test](https://github.com/ericndungutse/amalitech-lab-emps-enhancement/actions/workflows/ci.yml/badge.svg)](https://github.com/ericndungutse/amalitech-lab-emps-enhancement/actions/workflows/ci.yml)
 
 ### Video Presentation
 
