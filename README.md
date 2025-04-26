@@ -1,6 +1,11 @@
 # Employee Management System
+
+[![Build and Test](https://github.com/ericndungutse/amalitech-lab-emps-enhancement/actions/workflows/build_and_test.yml/badge.svg)](https://github.com/ericndungutse/amalitech-lab-emps-enhancement/actions/workflows/build_and_test.yml)
+
 ### Video Presentation
+
 https://screenrec.com/share/qyxIB6vJjw
+
 ## Overview
 
 This project is an **Employee Management System** built using Java. It provides functionalities to manage employee records, including adding, updating, deleting, and viewing employee details.

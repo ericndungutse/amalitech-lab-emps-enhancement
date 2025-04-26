@@ -173,16 +173,16 @@ public class EmployeeCollection<T> {
         List<Employee<T>> departmentEmployees = new ArrayList<>();
         try {
             if (department == null) {
-                throw new AppException(
-                        "Error while retrieving employees by department: Department is required!");
+                throw new InvalidInputException(
+                        "Error while retrieving employees by department: Department is required!", "department");
             }
             departmentEmployees = employees.values().stream()
-                    .filter(e -> department != null
-                            && department.equals(e.getDepartment()))
+                    .filter(e -> department.equals(e.getDepartment()))
                     .collect(Collectors.toList());
-        } catch (AppException e) {
+        } catch (InvalidInputException e) {
             // Log the error or handle it as needed
             System.err.println(e.getMessage());
+            throw e;
         }
         return departmentEmployees;
     }
@@ -396,4 +396,17 @@ public class EmployeeCollection<T> {
         return "EmployeeCollection [employees=" + employees + "]";
     }
 
+    public Employee<T> getEmployeeById(T employeeId) {
+        Employee<T> employee;
+        try{
+             employee = this.employees.get(employeeId);
+            if(employee == null){
+                throw new EmployeeNotFoundException(String.format("Employee with ID: %s not found",employeeId));
+            }
+        }catch (EmployeeNotFoundException e){
+           AppContext.logger.severe(e.getMessage());
+           return  null;
+        }
+        return employee;
+    }
 }
