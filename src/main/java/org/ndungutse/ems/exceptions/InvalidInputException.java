@@ -18,12 +18,6 @@ public class InvalidInputException extends RuntimeException {
       }
 
       public String getMessage() {
-            return "{ message: " + super.getMessage() + ", field: " + this.field
-                        + " }";
-      }
-
-      @Override
-      public String toString() {
-            return "Error 👎: " + super.getMessage();
+            return  super.getMessage();
       }
 }

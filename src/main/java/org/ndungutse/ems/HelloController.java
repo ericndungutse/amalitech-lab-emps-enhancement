@@ -48,31 +48,31 @@ public class HelloController {
     private TextField minRatingField;
 
     @FXML
-    private TableView<Employee<Integer>> employeeTable;
+    private TableView<Employee<String>> employeeTable;
 
     @FXML
-    private TableColumn<Employee<Integer>, Integer> idColumn;
+    private TableColumn<Employee<String>, Integer> idColumn;
 
     @FXML
-    private TableColumn<Employee<Integer>, String> nameColumn;
+    private TableColumn<Employee<String>, String> nameColumn;
 
     @FXML
-    private TableColumn<Employee<Integer>, String> departmentColumn;
+    private TableColumn<Employee<String>, String> departmentColumn;
 
     @FXML
-    private TableColumn<Employee<Integer>, Double> salaryColumn;
+    private TableColumn<Employee<String>, Double> salaryColumn;
 
     @FXML
-    private TableColumn<Employee<Integer>, Double> ratingColumn;
+    private TableColumn<Employee<String>, Double> ratingColumn;
 
     @FXML
-    private TableColumn<Employee<Integer>, Integer> experienceColumn;
+    private TableColumn<Employee<String>, Integer> experienceColumn;
     @FXML
     private TextField searchField;
     @FXML
-    private TableColumn<Employee<Integer>, Boolean> statusColumn;
+    private TableColumn<Employee<String>, Boolean> statusColumn;
 
-    private final EmployeeCollection<Integer> employeeCollection = AppContext
+    private final EmployeeCollection<String> employeeCollection = AppContext
             .getEmployeeCollection();
 
     @FXML
@@ -91,38 +91,42 @@ public class HelloController {
         }
 
         if (nameColumn != null)
-            nameColumn.setCellValueFactory(
-                    data -> new SimpleStringProperty(data.getValue().getName()));
+            nameColumn.setCellValueFactory(data -> new SimpleStringProperty(
+                    data.getValue().getName()));
 
         if (departmentColumn != null)
-            departmentColumn.setCellValueFactory(
-                    data -> new SimpleStringProperty(data.getValue().getDepartment().toString()));
+            departmentColumn
+                    .setCellValueFactory(data -> new SimpleStringProperty(
+                            data.getValue().getDepartment().toString()));
 
         if (salaryColumn != null)
-            salaryColumn.setCellValueFactory(
-                    data -> new SimpleDoubleProperty(data.getValue().getSalary()).asObject());
+            salaryColumn.setCellValueFactory(data -> new SimpleDoubleProperty(
+                    data.getValue().getSalary()).asObject());
 
         if (ratingColumn != null)
-            ratingColumn.setCellValueFactory(
-                    data -> new SimpleDoubleProperty(data.getValue().getPerformanceRating()).asObject());
+            ratingColumn.setCellValueFactory(data -> new SimpleDoubleProperty(
+                    data.getValue().getPerformanceRating()).asObject());
 
         if (experienceColumn != null)
-            experienceColumn.setCellValueFactory(
-                    data -> new SimpleIntegerProperty(data.getValue().getYearsOfExperience()).asObject());
+            experienceColumn
+                    .setCellValueFactory(data -> new SimpleIntegerProperty(
+                            data.getValue().getYearsOfExperience()).asObject());
 
         if (statusColumn != null)
-            statusColumn.setCellValueFactory(
-                    data -> new SimpleBooleanProperty(data.getValue().isActive()).asObject());
+            statusColumn.setCellValueFactory(data -> new SimpleBooleanProperty(
+                    data.getValue().isActive()).asObject());
 
-        // Optional: safely call these methods only if needed controls are present
-        if (departmentComboBox != null && minSalaryField != null &&
-                maxSalaryField != null && minRatingField != null) {
+        // Optional: safely call these methods only if needed controls are
+        // present
+        if (departmentComboBox != null && minSalaryField != null
+                && maxSalaryField != null && minRatingField != null) {
             Department department = departmentComboBox.getValue();
             Double minSalary = parseDoubleOrNull(minSalaryField.getText());
             Double maxSalary = parseDoubleOrNull(maxSalaryField.getText());
             Double minRating = parseDoubleOrNull(minRatingField.getText());
 
-            List<Employee<Integer>> employees = getEmployees(department, minSalary, maxSalary, minRating, 1);
+            List<Employee<String>> employees = getEmployees(department,
+                    minSalary, maxSalary, minRating, 1);
             displayEmployees(employees);
         }
     }
@@ -156,7 +160,7 @@ public class HelloController {
     // Delete an employee
     @FXML
     private void handleDeleteEmployee() {
-        Employee<Integer> selectedEmployee = employeeTable.getSelectionModel()
+        Employee<String> selectedEmployee = employeeTable.getSelectionModel()
                 .getSelectedItem();
 
         if (selectedEmployee == null) {
@@ -185,7 +189,7 @@ public class HelloController {
             Double maxSalary = parseDoubleOrNull(maxSalaryField.getText());
             Double minRating = parseDoubleOrNull(minRatingField.getText());
 
-            List<Employee<Integer>> employees = getEmployees(department,
+            List<Employee<String>> employees = getEmployees(department,
                     minSalary, maxSalary, minRating, currentPage);
             displayEmployees(employees);
         }
@@ -200,7 +204,7 @@ public class HelloController {
             return;
         }
 
-        List<Employee<Integer>> results = AppContext.getEmployeeCollection()
+        List<Employee<String>> results = AppContext.getEmployeeCollection()
                 .getEmployeeByName(searchTerm);
         employeeTable.getItems().setAll(results);
     }
@@ -218,7 +222,7 @@ public class HelloController {
         Double maxSalary = parseDoubleOrNull(maxSalaryField.getText());
         Double minRating = parseDoubleOrNull(minRatingField.getText());
 
-        List<Employee<Integer>> employees = getEmployees(department, minSalary,
+        List<Employee<String>> employees = getEmployees(department, minSalary,
                 maxSalary, minRating, currentPage);
         displayEmployees(employees);
     }
@@ -235,7 +239,7 @@ public class HelloController {
             Double maxSalary = parseDoubleOrNull(maxSalaryField.getText());
             Double minRating = parseDoubleOrNull(minRatingField.getText());
 
-            List<Employee<Integer>> filtered = getEmployees(department,
+            List<Employee<String>> filtered = getEmployees(department,
                     minSalary, maxSalary, minRating, currentPage);
 
             displayEmployees(filtered);
@@ -271,31 +275,31 @@ public class HelloController {
         // Reset the table to show all employees
         currentPage = 1;
         lastPage = false;
-        List<Employee<Integer>> employees = getEmployees(null, null, null, null,
+        List<Employee<String>> employees = getEmployees(null, null, null, null,
                 currentPage);
         displayEmployees(employees);
     }
 
     public void handleSortByExperience(ActionEvent event) {
-        List<Employee<Integer>> employeesByExperience = AppContext
+        List<Employee<String>> employeesByExperience = AppContext
                 .getEmployeeCollection().sortEmployeesByExperienceDesc();
         employeeTable.getItems().setAll(employeesByExperience);
     }
 
     public void handleSortBySalary(ActionEvent event) {
-        List<Employee<Integer>> employeesBySalary = AppContext
+        List<Employee<String>> employeesBySalary = AppContext
                 .getEmployeeCollection().sortEmployeesBySalaryDesc();
         employeeTable.getItems().setAll(employeesBySalary);
     }
 
     public void handleSortByRating(ActionEvent event) {
-        List<Employee<Integer>> employeesByRating = AppContext
+        List<Employee<String>> employeesByRating = AppContext
                 .getEmployeeCollection().sortEmployeesByPerformanceRatingDesc();
         employeeTable.getItems().setAll(employeesByRating);
     }
 
     public void handleTop5HighestPaid(ActionEvent event) {
-        List<Employee<Integer>> top5HighestPaid = AppContext
+        List<Employee<String>> top5HighestPaid = AppContext
                 .getEmployeeCollection().getTop5HighestPaidEmployees();
         employeeTable.getItems().setAll(top5HighestPaid);
     }
@@ -318,7 +322,7 @@ public class HelloController {
             Double minSalary = parseDoubleOrNull(minSalaryField.getText());
             Double maxSalary = parseDoubleOrNull(maxSalaryField.getText());
             Double minRating = parseDoubleOrNull(minRatingField.getText());
-            List<Employee<Integer>> employees = getEmployees(department,
+            List<Employee<String>> employees = getEmployees(department,
                     minSalary, maxSalary, minRating, currentPage);
             displayEmployees(employees);
         }
@@ -338,7 +342,7 @@ public class HelloController {
             Double minSalary = parseDoubleOrNull(minSalaryField.getText());
             Double maxSalary = parseDoubleOrNull(maxSalaryField.getText());
             Double minRating = parseDoubleOrNull(minRatingField.getText());
-            List<Employee<Integer>> employees = getEmployees(department,
+            List<Employee<String>> employees = getEmployees(department,
                     minSalary, maxSalary, minRating, currentPage);
             if (employees == null) {
                 currentPage -= 1;
@@ -353,12 +357,12 @@ public class HelloController {
     }
 
     // Get Employees from collections based on filters and page number
-    public List<Employee<Integer>> getEmployees(Department department,
+    public List<Employee<String>> getEmployees(Department department,
             Double minSalary, Double maxSalary, Double minRating,
             int currentPage) {
 
         try {
-            List<Employee<Integer>> filtered = employeeCollection.filter(
+            List<Employee<String>> filtered = employeeCollection.filter(
                     department, minSalary, maxSalary, minRating, currentPage);
 
             // Mark last page if no more employees to display to prevent
@@ -376,16 +380,14 @@ public class HelloController {
     }
 
     // Display employees in a table
-    public void displayEmployees(List<Employee<Integer>> employees) {
-        System.out.println(
-                "Display Employees: " + " " + currentPage + " " + lastPage);
+    public void displayEmployees(List<Employee<String>> employees) {
         if (employees == null)
             return;
         employeeTable.getItems().setAll(employees);
     }
 
-
-    public void handleOpenRaiseSalaryModel(ActionEvent event) throws IOException {
+    public void handleOpenRaiseSalaryModel(ActionEvent event)
+            throws IOException {
         try {
             // Load the FXML for the popup
             FXMLLoader fxmlLoader = new FXMLLoader(
@@ -393,7 +395,8 @@ public class HelloController {
             Parent popupRoot = fxmlLoader.load();
 
             // Get the AddEmployee controller
-            RaiseSalaryController raiseSalaryController = fxmlLoader.getController();
+            RaiseSalaryController raiseSalaryController = fxmlLoader
+                    .getController();
             raiseSalaryController.setHelloController(this);
 
             // Create a new stage for the popup
@@ -411,5 +414,4 @@ public class HelloController {
         }
     }
 
-    
 }

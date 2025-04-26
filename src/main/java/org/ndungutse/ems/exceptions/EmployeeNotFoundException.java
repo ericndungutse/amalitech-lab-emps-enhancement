@@ -7,7 +7,7 @@ public class EmployeeNotFoundException extends RuntimeException {
       }
 
       public String getMessage() {
-            return "{ message: " + super.getMessage() + " }";
+            return super.getMessage();
       }
 
 }
