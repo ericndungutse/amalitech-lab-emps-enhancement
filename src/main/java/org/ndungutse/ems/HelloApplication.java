@@ -72,8 +72,9 @@ public class HelloApplication extends Application {
                 // employeeCollection.addEmployee(new Employee<>(7, "",
                 // Department.IT, 5500, 4.6, 7, true));
 
-                // employeeCollection.addEmployee(new Employee<>(8, "Sandrine",
-                // Department.HR, 2000, 3.6, 3, false));
+                employeeCollection.addEmployee(new Employee<String>(
+                                employeeCollection.generateNewEmployeeId(),
+                                null, Department.HR, 2000, 4, 3, false));
                 // employeeCollection.addEmployee(new Employee<>(9, "Albert",
                 // Department.FINANCE, 10000, 4.9, 10, true));
                 // employeeCollection.addEmployee(new Employee<>(10,
