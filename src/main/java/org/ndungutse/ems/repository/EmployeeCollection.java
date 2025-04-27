@@ -1,11 +1,6 @@
 package org.ndungutse.ems.repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.UUID;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.ndungutse.ems.AppContext;
@@ -39,150 +34,130 @@ public class EmployeeCollection<T> {
     }
 
     // Remove Employee
-    public void removeEmployee(T employeeId) {
-        try {
-            // Check if employee with id exists
-            if (this.employees.get(employeeId) == null)
-                throw new EmployeeNotFoundException(
-                        "Employee with id: " + employeeId + "does not exists.");
+    public void removeEmployee(T employeeId) throws EmployeeNotFoundException {
+        // Check if employee with id exists
+        if (this.employees.get(employeeId) == null)
+            throw new EmployeeNotFoundException(
+                    "Employee with id: " + employeeId + "does not exists.");
 
-            // Remove the employee
-            employees.remove(employeeId);
-        } catch (EmployeeNotFoundException e) {
-            AppContext.logger.severe(e.getMessage());
-        }
+        // Remove the employee
+        employees.remove(employeeId);
     }
 
     // Update Employee Details
     public void updateEmployeeEmployeeDetails(T employeeId, String field,
-            Object newValue) {
-        try {
+            Object newValue) throws EmployeeNotFoundException, AppException,
+            InvalidInputException {
 
-            // Find the employee
-            Employee<T> employeeToUpdate = this.employees.get(employeeId);
+        // Find the employee
+        Employee<T> employeeToUpdate = this.employees.get(employeeId);
 
-            // Check if employee exists
-            if (employeeToUpdate == null)
-                throw new EmployeeNotFoundException("Employee with id: "
-                        + employeeId + " does not exists.");
+        // Check if employee exists
+        if (employeeToUpdate == null)
+            throw new EmployeeNotFoundException(
+                    "Employee with id: " + employeeId + " does not exists.");
 
-            // Restrict Id Update
-            if (field == "employeeId")
-                throw new AppException("Employee Id cannot be update.");
+        // Restrict Id Update
+        if (Objects.equals(field, "employeeId"))
+            throw new AppException("Employee Id cannot be update.");
 
-            // Update employee field
-            switch (field) {
-            case "name":
-                // validate employee
-                Validator.validateName((String) newValue);
-                employeeToUpdate.setName((String) newValue);
-                break;
-            case "department":
-                Validator.validateDepartment(newValue);
-                employeeToUpdate.setDepartment((Department) newValue);
-                break;
-            case "salary":
-                Validator.validateSalary(newValue);
-                double newSalary = newValue instanceof Integer
-                        ? ((Integer) newValue).doubleValue()
-                        : (double) newValue;
+        // Update employee field
+        switch (field) {
+        case "name":
+            // validate employee
+            Validator.validateName((String) newValue);
+            employeeToUpdate.setName((String) newValue);
+            break;
+        case "department":
+            Validator.validateDepartment(newValue);
+            employeeToUpdate.setDepartment((Department) newValue);
+            break;
+        case "salary":
+            Validator.validateSalary(newValue);
+            double newSalary = newValue instanceof Integer
+                    ? ((Integer) newValue).doubleValue()
+                    : (double) newValue;
 
-                employeeToUpdate.setSalary(newSalary);
-                break;
-            case "performanceRating":
-                Validator.validateRating(newValue);
+            employeeToUpdate.setSalary(newSalary);
+            break;
+        case "performanceRating":
+            Validator.validateRating(newValue);
 
-                double newRating = newValue instanceof Integer
-                        ? ((Integer) newValue).doubleValue()
-                        : (double) newValue;
-                employeeToUpdate.setPerformanceRating((double) newRating);
-                break;
-            case "yearsOfExperience":
-                // Validator
-                Validator.validateExperience(newValue);
-                employeeToUpdate.setYearsOfExperience((Integer) newValue);
-                break;
-            case "isActive":
-                employeeToUpdate.setActive((Boolean) newValue);
-                break;
-            default:
-                throw new AppException("Invalid field.");
-            }
-        } catch (InvalidInputException e) {
-            AppContext.logger.severe(e.getMessage());
-        } catch (Exception e) {
-            AppContext.logger.severe(e.getMessage());
+            double newRating = newValue instanceof Integer
+                    ? ((Integer) newValue).doubleValue()
+                    : (double) newValue;
+            employeeToUpdate.setPerformanceRating((double) newRating);
+            break;
+        case "yearsOfExperience":
+            // Validator
+            Validator.validateExperience(newValue);
+            employeeToUpdate.setYearsOfExperience((Integer) newValue);
+            break;
+        case "isActive":
+            employeeToUpdate.setActive((Boolean) newValue);
+            break;
+        default:
+            throw new AppException("Invalid field.");
         }
+
     }
 
     // Get All employees and display them
-    public List<Employee<T>> getAllEmployees() {
-        try {
+    public List<Employee<T>> getAllEmployees()
+            throws EmployeeNotFoundException, AppException {
 
-            List<Employee<T>> employeesList = new ArrayList<>(
-                    this.employees.values());
+        List<Employee<T>> employeesList = new ArrayList<>(
+                this.employees.values());
 
-            if (employeesList.isEmpty()) {
-                throw new EmployeeNotFoundException(
-                        "No employees found in the system.");
-            }
-
-            return employeesList;
-        } catch (Exception e) {
-            AppContext.logger.severe(e.getMessage());
+        if (employeesList.isEmpty()) {
+            throw new EmployeeNotFoundException(
+                    "No employees found in the system.");
         }
 
-        return null;
+        return employeesList;
+
     }
 
     // Paginated Get Employees
-    public List<Employee<T>> getAllEmployees(int pageNumber) {
-        try {
-            if (pageNumber <= 0) {
-                throw new AppException("Page number must be greater than 0.");
-            }
-            if (this.employees.values().isEmpty()) {
-                throw new AppException("No employees found in the system.");
-            }
+    public List<Employee<T>> getAllEmployees(int pageNumber)
+            throws AppException {
 
-            List<Employee<T>> allEmployees = new ArrayList<>(
-                    this.employees.values());
-
-            int fromIndex = (pageNumber - 1) * pageSize;
-            int toIndex = Math.min(fromIndex + pageSize, allEmployees.size());
-
-            if (fromIndex >= allEmployees.size() || fromIndex < 0) {
-                return new ArrayList<>();
-            }
-
-            List<Employee<T>> page = allEmployees.subList(fromIndex, toIndex);
-
-            return page;
-        } catch (AppException e) {
-            AppContext.logger.severe(e.getMessage());
+        if (pageNumber <= 0) {
+            throw new AppException("Page number must be greater than 0.");
+        }
+        if (this.employees.values().isEmpty()) {
+            throw new AppException("No employees found in the system.");
         }
 
-        return null;
+        List<Employee<T>> allEmployees = new ArrayList<>(
+                this.employees.values());
+
+        int fromIndex = (pageNumber - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, allEmployees.size());
+
+        if (fromIndex >= allEmployees.size() || fromIndex < 0) {
+            return new ArrayList<>();
+        }
+
+        List<Employee<T>> page = allEmployees.subList(fromIndex, toIndex);
+
+        return page;
+
     }
 
     // Get employees by department
-    public List<Employee<T>> getEmployeesByDepartment(Department department) {
-        List<Employee<T>> departmentEmployees = new ArrayList<>();
-        try {
-            if (department == null) {
-                throw new InvalidInputException(
-                        "Error while retrieving employees by department: Department is required!",
-                        "department");
-            }
-            departmentEmployees = employees.values().stream()
-                    .filter(e -> department.equals(e.getDepartment()))
-                    .collect(Collectors.toList());
-        } catch (InvalidInputException e) {
-            // Log the error or handle it as needed
-            System.err.println(e.getMessage());
-            throw e;
+    public List<Employee<T>> getEmployeesByDepartment(Department department)
+            throws InvalidInputException {
+
+        if (department == null) {
+            throw new InvalidInputException(
+                    "Error while retrieving employees by department: Department is required!",
+                    "department");
         }
-        return departmentEmployees;
+
+        return employees.values().stream()
+                .filter(e -> department.equals(e.getDepartment()))
+                .collect(Collectors.toList());
     }
 
     // Get Employees by name based on a search term
@@ -211,42 +186,32 @@ public class EmployeeCollection<T> {
 
     // Get EMployees based on salary
     public List<Employee<T>> getEmployeesBySalaryRange(double minSalary,
-            double maxSalary) {
-        List<Employee<T>> employees = new ArrayList<>();
-        try {
+            double maxSalary) throws InvalidInputException {
 
-            Validator.validateSalary(minSalary);
-            Validator.validateSalary(maxSalary);
+        Validator.validateSalary(minSalary);
+        Validator.validateSalary(maxSalary);
 
-            employees = this.employees.values().stream()
-                    .filter(employee -> employee.getSalary() >= minSalary
-                            && employee.getSalary() <= maxSalary)
-                    .collect(Collectors.toList());
-        } catch (InvalidInputException e) {
-            System.err.println(e.getMessage());
-        }
-
-        return employees;
+        return this.employees.values().stream()
+                .filter(employee -> employee.getSalary() >= minSalary
+                        && employee.getSalary() <= maxSalary)
+                .collect(Collectors.toList());
     }
 
     // Employees with minimum performance rating (e.g., rating >= 4.0).
-    public List<Employee<T>> getEmployeesByPerformanceRating(double minRating) {
-        List<Employee<T>> employees = new ArrayList<>();
-        try {
-            Validator.validateRating(minRating);
-            employees = this.employees.values().stream().filter(
-                    employee -> employee.getPerformanceRating() >= minRating)
-                    .collect(Collectors.toList());
+    public List<Employee<T>> getEmployeesByPerformanceRating(double minRating)
+            throws InvalidInputException {
 
-        } catch (InvalidInputException e) {
-            AppContext.logger.severe(e.getMessage());
-        }
-        return employees;
+        Validator.validateRating(minRating);
+
+        return this.employees.values().stream().filter(
+                employee -> employee.getPerformanceRating() >= minRating)
+                .collect(Collectors.toList());
     }
 
     // Combined Filters
     public List<Employee<T>> filter(Department department, Double minSalary,
-            Double maxSalary, Double minRating, int pageNumber) {
+            Double maxSalary, Double minRating, int pageNumber)
+            throws InvalidInputException, InvalidSalaryException {
         // Validate rating
         if (minRating != null)
             Validator.validateRating(minRating);
@@ -281,8 +246,7 @@ public class EmployeeCollection<T> {
 
     // Sort employees by years of experience in descending order
     public List<Employee<T>> sortEmployeesByExperienceDesc() {
-        List<Employee<T>> employeesList = this.employees.values().stream()
-                .collect(Collectors.toList());
+        List<Employee<T>> employeesList = new ArrayList<>(this.employees.values());
         Collections.sort(employeesList);
 
         return employeesList;
@@ -290,8 +254,7 @@ public class EmployeeCollection<T> {
 
     // Sort employees by salary in descending order
     public List<Employee<T>> sortEmployeesBySalaryDesc() {
-        List<Employee<T>> employeesList = this.employees.values().stream()
-                .collect(Collectors.toList());
+        List<Employee<T>> employeesList = new ArrayList<>(this.employees.values());
         employeesList.sort(
                 (e1, e2) -> Double.compare(e2.getSalary(), e1.getSalary()));
 
@@ -300,9 +263,8 @@ public class EmployeeCollection<T> {
 
     // Sorts employees by performance rating (best first).
     public List<Employee<T>> sortEmployeesByPerformanceRatingDesc() {
-        List<Employee<T>> employeesList = this.employees.values().stream()
-                .collect(Collectors.toList());
-        Collections.sort(employeesList, (e1, e2) -> Double
+        List<Employee<T>> employeesList = new ArrayList<>(this.employees.values());
+        employeesList.sort((e1, e2) -> Double
                 .compare(e2.getPerformanceRating(), e1.getPerformanceRating()));
 
         return employeesList;
@@ -311,35 +273,29 @@ public class EmployeeCollection<T> {
     // Give a salary raise to employees with high performance ratings (e.g.,
     // rating
     // ≥ 4.5).
-    public void giveSalaryRaise(double percentage, double minRating) {
+    public void giveSalaryRaise(double percentage, double minRating)
+            throws InvalidInputException {
         // Use Iterator not loop to prevent ConcurrentModificationException
         Iterator<Employee<T>> iterator = this.employees.values().iterator();
 
-        try {
-            Validator.validateRating(minRating);
-            Validator.validatePercentage(percentage);
+        Validator.validateRating(minRating);
+        Validator.validatePercentage(percentage);
 
-            while (iterator.hasNext()) {
-                Employee<T> employee = iterator.next();
-                if (employee.getPerformanceRating() >= minRating) {
-                    double newSalary = employee.getSalary()
-                            + (employee.getSalary() * percentage / 100);
-                    employee.setSalary(newSalary);
-                }
+        while (iterator.hasNext()) {
+            Employee<T> employee = iterator.next();
+            if (employee.getPerformanceRating() >= minRating) {
+                double newSalary = employee.getSalary()
+                        + (employee.getSalary() * percentage / 100);
+                employee.setSalary(newSalary);
             }
-        } catch (InvalidInputException e) {
-            System.err.println(e.getMessage());
-            throw e;
         }
 
     }
 
     // Retrieve the top 5 highest-paid employees.
     public List<Employee<T>> getTop5HighestPaidEmployees() {
-        List<Employee<T>> employeesList = this.employees.values().stream()
-                .collect(Collectors.toList());
-        Collections.sort(employeesList,
-                (e1, e2) -> Double.compare(e2.getSalary(), e1.getSalary()));
+        List<Employee<T>> employeesList = new ArrayList<>(this.employees.values());
+        employeesList.sort((e1, e2) -> Double.compare(e2.getSalary(), e1.getSalary()));
         // Use min method to ensure that if list contains less than 5 employees,
         // it will
         // not throw an exception, but will display the available employees.
@@ -348,22 +304,16 @@ public class EmployeeCollection<T> {
     }
 
     // Calculate the average salary of employees by department.
-    public double calculateAverageSalaryByDepartment(Department department) {
-        double avg = 0.0;
-        try {
+    public double calculateAverageSalaryByDepartment(Department department)
+            throws InvalidInputException {
 
-            Validator.validateDepartment(department);
-            List<Employee<T>> departmentEmployees = new ArrayList<>(
-                    this.getEmployeesByDepartment(department));
+        Validator.validateDepartment(department);
+        List<Employee<T>> departmentEmployees = new ArrayList<>(
+                this.getEmployeesByDepartment(department));
 
-            avg = departmentEmployees.stream().mapToDouble(Employee::getSalary)
-                    .average().orElse(0.0);
+        return departmentEmployees.stream().mapToDouble(Employee::getSalary)
+                .average().orElse(0.0);
 
-        } catch (InvalidInputException e) {
-            AppContext.logger.severe(e.getMessage());
-        }
-
-        return avg;
     }
 
     // Display employees
@@ -398,18 +348,8 @@ public class EmployeeCollection<T> {
         return "EmployeeCollection [employees=" + employees + "]";
     }
 
-    public Employee<T> getEmployeeById(T employeeId) {
-        Employee<T> employee;
-        try {
-            employee = this.employees.get(employeeId);
-            if (employee == null) {
-                throw new EmployeeNotFoundException(String
-                        .format("Employee with ID: %s not found", employeeId));
-            }
-        } catch (EmployeeNotFoundException e) {
-            AppContext.logger.severe(e.getMessage());
-            return null;
-        }
-        return employee;
+    public Employee<T> getEmployeeById(T employeeId)
+            throws EmployeeNotFoundException {
+        return this.employees.get(employeeId);
     }
 }
