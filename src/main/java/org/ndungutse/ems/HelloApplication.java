@@ -15,21 +15,17 @@ import javafx.stage.Stage;
 public class HelloApplication extends Application {
         @Override
         public void start(Stage stage) throws IOException {
-                try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(
-                                        HelloApplication.class.getResource(
-                                                        "hello-view.fxml"));
 
-                        Scene scene = new Scene(fxmlLoader.load());
+                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class
+                                .getResource("hello-view.fxml"));
 
-                        stage.setTitle("Employee Management System");
+                Scene scene = new Scene(fxmlLoader.load());
 
-                        stage.setScene(scene);
-                        stage.show();
+                stage.setTitle("Employee Management System");
 
-                } catch (IOException e) {
-                        AppContext.logger.severe(e.getMessage());
-                }
+                stage.setScene(scene);
+                stage.show();
+
         }
 
         public static final EmployeeCollection<String> employeeCollection = AppContext
@@ -72,9 +68,9 @@ public class HelloApplication extends Application {
                 // employeeCollection.addEmployee(new Employee<>(7, "",
                 // Department.IT, 5500, 4.6, 7, true));
 
-                employeeCollection.addEmployee(new Employee<String>(
-                                employeeCollection.generateNewEmployeeId(),
-                                null, Department.HR, 2000, 4, 3, false));
+                // employeeCollection.addEmployee(new Employee<String>(
+                // employeeCollection.generateNewEmployeeId(),
+                // null, Department.HR, 2000, 4, 3, false));
                 // employeeCollection.addEmployee(new Employee<>(9, "Albert",
                 // Department.FINANCE, 10000, 4.9, 10, true));
                 // employeeCollection.addEmployee(new Employee<>(10,

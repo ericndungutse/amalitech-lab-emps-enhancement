@@ -27,19 +27,15 @@ public class EmployeeCollection<T> {
     }
 
     // Add employee
-    public void addEmployee(Employee<T> employee) {
-        try {
-            // Validate Employee
-            Validator.validateNewEmployee(employee);
+    public void addEmployee(Employee<T> employee)
+            throws AppException, InvalidInputException, InvalidSalaryException {
 
-            // Save new employee
-            this.employees.put(employee.getEmployeeId(), employee);
+        // Validate Employee
+        Validator.validateNewEmployee(employee);
 
-        } catch (AppException | InvalidSalaryException
-                | InvalidInputException e) {
-            AppContext.logger.severe(e.getMessage());
-            throw e;
-        }
+        // Save new employee
+        this.employees.put(employee.getEmployeeId(), employee);
+
     }
 
     // Remove Employee
@@ -190,28 +186,26 @@ public class EmployeeCollection<T> {
     }
 
     // Get Employees by name based on a search term
-    public List<Employee<T>> getEmployeeByName(String name) {
+    public List<Employee<T>> getEmployeeByName(String name)
+            throws InvalidInputException, EmployeeNotFoundException {
         List<Employee<T>> employeesByName = new ArrayList<>();
-        try {
-            if (name == null)
-                throw new InvalidInputException(
-                        "Error while searching employees by name: Name is required",
-                        "name");
 
-            employeesByName = employees.values().stream().filter(employee -> {
-                String employeeName = employee.getName();
-                return employeeName != null && employeeName.toLowerCase()
-                        .contains(name.toLowerCase());
-            }).collect(Collectors.toList());
+        if (name == null || name.isEmpty())
+            throw new InvalidInputException(
+                    "Error while searching employees by name: Name is required",
+                    "name");
 
-            if (employeesByName.isEmpty()) {
-                throw new EmployeeNotFoundException(
-                        "No employee found with name " + name);
-            }
-        } catch (InvalidInputException | EmployeeNotFoundException e) {
-            AppContext.logger.severe(e.getMessage());
-            throw e;
+        employeesByName = employees.values().stream().filter(employee -> {
+            String employeeName = employee.getName();
+            return employeeName != null
+                    && employeeName.toLowerCase().contains(name.toLowerCase());
+        }).collect(Collectors.toList());
+
+        if (employeesByName.isEmpty()) {
+            throw new EmployeeNotFoundException(
+                    "No employee found with name " + name);
         }
+
         return employeesByName;
     }
 

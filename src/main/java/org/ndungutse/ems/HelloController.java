@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import org.ndungutse.ems.exceptions.AppException;
+import org.ndungutse.ems.exceptions.EmployeeNotFoundException;
 import org.ndungutse.ems.exceptions.InvalidInputException;
 import org.ndungutse.ems.models.Department;
 import org.ndungutse.ems.models.Employee;
@@ -202,14 +203,12 @@ public class HelloController {
             lastPage = false;
             pageNumberLabel.setText("Page: " + currentPage);
             String searchTerm = searchField.getText();
-            if (searchTerm == null || searchTerm.isEmpty()) {
-                return;
-            }
 
             List<Employee<String>> results = AppContext.getEmployeeCollection()
                     .getEmployeeByName(searchTerm);
             employeeTable.getItems().setAll(results);
-        } catch (Exception e) {
+        } catch (EmployeeNotFoundException | InvalidInputException e) {
+            System.out.println(e.toString());
             DialogUtility.showErrorAlert("Search Error", e.getMessage());
         }
     }

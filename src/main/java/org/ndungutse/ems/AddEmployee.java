@@ -8,6 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import org.ndungutse.ems.exceptions.AppException;
 import org.ndungutse.ems.exceptions.InvalidInputException;
+import org.ndungutse.ems.exceptions.InvalidSalaryException;
 import org.ndungutse.ems.models.Department;
 import org.ndungutse.ems.models.Employee;
 import org.ndungutse.ems.repository.EmployeeCollection;
@@ -56,10 +57,11 @@ public class AddEmployee implements Initializable {
             Department department = departmentComboBox.getValue();
             boolean isActive = activeCheckBox.isSelected();
 
-            if (name.isEmpty() || salaryText.isEmpty() || ratingText.isEmpty()
-                    || experienceText.isEmpty()) {
-                throw new AppException("All fields must be filled.");
-            }
+            // if (name.isEmpty() || salaryText.isEmpty() ||
+            // ratingText.isEmpty()
+            // || experienceText.isEmpty()) {
+            // throw new AppException("All fields must be filled.");
+            // }
 
             Employee<String> employee = new Employee<>(
                     employeeCollection.generateNewEmployeeId(), name,
@@ -76,15 +78,22 @@ public class AddEmployee implements Initializable {
             helloController.displayEmployees(employees);
 
         } catch (AppException e) {
-            DialogUtility.showErrorAlert("Error", e.getMessage());
+            DialogUtility.showErrorAlert("Error1", e.getMessage());
+            AppContext.logger.severe(e.toString());
         } catch (NumberFormatException e) {
             DialogUtility.showErrorAlert("Invalid Input",
                     "Invalid input " + e.getMessage());
+            AppContext.logger.severe(e.getMessage());
         } catch (InvalidInputException e) {
-            DialogUtility.showErrorAlert("Error", e.getMessage());
+            DialogUtility.showErrorAlert("Invalid Inputs", e.getMessage());
+            AppContext.logger.severe(e.getMessage());
+        } catch (InvalidSalaryException e) {
+            DialogUtility.showErrorAlert("Salary Error", e.getMessage());
+            AppContext.logger.severe(e.getMessage());
         } catch (Exception e) {
             DialogUtility.showErrorAlert("Error",
                     "Something went wrong! Try again later.");
+            AppContext.logger.severe(e.getMessage());
         }
 
     }
