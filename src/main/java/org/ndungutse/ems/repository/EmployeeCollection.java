@@ -127,7 +127,8 @@ public class EmployeeCollection<T> {
                     this.employees.values());
 
             if (employeesList.isEmpty()) {
-                throw new AppException("No employees found in the system.");
+                throw new EmployeeNotFoundException(
+                        "No employees found in the system.");
             }
 
             return employeesList;
@@ -174,7 +175,8 @@ public class EmployeeCollection<T> {
         try {
             if (department == null) {
                 throw new InvalidInputException(
-                        "Error while retrieving employees by department: Department is required!", "department");
+                        "Error while retrieving employees by department: Department is required!",
+                        "department");
             }
             departmentEmployees = employees.values().stream()
                     .filter(e -> department.equals(e.getDepartment()))
@@ -192,8 +194,9 @@ public class EmployeeCollection<T> {
         List<Employee<T>> employeesByName = new ArrayList<>();
         try {
             if (name == null)
-                throw new AppException(
-                        "Error while searching employees by name: Name is required");
+                throw new InvalidInputException(
+                        "Error while searching employees by name: Name is required",
+                        "name");
 
             employeesByName = employees.values().stream().filter(employee -> {
                 String employeeName = employee.getName();
@@ -201,8 +204,13 @@ public class EmployeeCollection<T> {
                         .contains(name.toLowerCase());
             }).collect(Collectors.toList());
 
-        } catch (AppException e) {
-            System.err.println(e.getMessage());
+            if (employeesByName.isEmpty()) {
+                throw new EmployeeNotFoundException(
+                        "No employee found with name " + name);
+            }
+        } catch (InvalidInputException | EmployeeNotFoundException e) {
+            AppContext.logger.severe(e.getMessage());
+            throw e;
         }
         return employeesByName;
     }
@@ -398,14 +406,15 @@ public class EmployeeCollection<T> {
 
     public Employee<T> getEmployeeById(T employeeId) {
         Employee<T> employee;
-        try{
-             employee = this.employees.get(employeeId);
-            if(employee == null){
-                throw new EmployeeNotFoundException(String.format("Employee with ID: %s not found",employeeId));
+        try {
+            employee = this.employees.get(employeeId);
+            if (employee == null) {
+                throw new EmployeeNotFoundException(String
+                        .format("Employee with ID: %s not found", employeeId));
             }
-        }catch (EmployeeNotFoundException e){
-           AppContext.logger.severe(e.getMessage());
-           return  null;
+        } catch (EmployeeNotFoundException e) {
+            AppContext.logger.severe(e.getMessage());
+            return null;
         }
         return employee;
     }

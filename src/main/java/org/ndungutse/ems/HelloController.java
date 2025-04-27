@@ -196,17 +196,22 @@ public class HelloController {
     }
 
     public void handleSearchByName(ActionEvent event) {
-        currentPage = 1;
-        lastPage = false;
-        pageNumberLabel.setText("Page: " + currentPage);
-        String searchTerm = searchField.getText();
-        if (searchTerm == null || searchTerm.isEmpty()) {
-            return;
-        }
+        try {
 
-        List<Employee<String>> results = AppContext.getEmployeeCollection()
-                .getEmployeeByName(searchTerm);
-        employeeTable.getItems().setAll(results);
+            currentPage = 1;
+            lastPage = false;
+            pageNumberLabel.setText("Page: " + currentPage);
+            String searchTerm = searchField.getText();
+            if (searchTerm == null || searchTerm.isEmpty()) {
+                return;
+            }
+
+            List<Employee<String>> results = AppContext.getEmployeeCollection()
+                    .getEmployeeByName(searchTerm);
+            employeeTable.getItems().setAll(results);
+        } catch (Exception e) {
+            DialogUtility.showErrorAlert("Search Error", e.getMessage());
+        }
     }
 
     public void handleClearSearch(ActionEvent event) {
