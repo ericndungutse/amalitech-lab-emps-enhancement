@@ -13,7 +13,8 @@ public class DialogUtility {
         alert.setHeaderText(null);
         alert.setContentText(content);
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(DialogUtility.class.getResource("/styles/dialog-style.css").toExternalForm());
+        dialogPane.getStylesheets().add(DialogUtility.class
+                .getResource("/styles/dialog-style.css").toExternalForm());
         alert.showAndWait();
     }
 
@@ -23,7 +24,8 @@ public class DialogUtility {
         alert.setHeaderText(null);
         alert.setContentText(content);
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(DialogUtility.class.getResource("/styles/dialog-style.css").toExternalForm());
+        dialogPane.getStylesheets().add(DialogUtility.class
+                .getResource("/styles/dialog-style.css").toExternalForm());
         alert.showAndWait();
     }
 
@@ -32,7 +34,8 @@ public class DialogUtility {
         confirmation.setTitle(title);
         confirmation.setHeaderText(headerText);
         DialogPane dialogPane = confirmation.getDialogPane();
-        dialogPane.getStylesheets().add(DialogUtility.class.getResource("/styles/dialog-style.css").toExternalForm());
+        dialogPane.getStylesheets().add(DialogUtility.class
+                .getResource("/styles/dialog-style.css").toExternalForm());
         Optional<ButtonType> result = confirmation.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;
     }

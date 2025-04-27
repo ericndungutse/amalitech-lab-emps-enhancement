@@ -64,9 +64,6 @@ public class RaiseSalaryController {
                     "Please enter valid numbers for percentage and rating.");
         } catch (InvalidInputException e) {
             DialogUtility.showErrorAlert("Error", e.getMessage());
-        } catch (Exception e) {
-            DialogUtility.showErrorAlert("Error", e.getMessage());
-            e.printStackTrace();
         }
     }
 

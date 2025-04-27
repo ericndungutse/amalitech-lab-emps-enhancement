@@ -1,11 +1,11 @@
 package org.ndungutse.ems;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.Node;
-import javafx.scene.control.*;
 import org.ndungutse.ems.exceptions.AppException;
+import org.ndungutse.ems.exceptions.EmployeeNotFoundException;
 import org.ndungutse.ems.exceptions.InvalidInputException;
 import org.ndungutse.ems.models.Department;
 import org.ndungutse.ems.models.Employee;
@@ -21,6 +21,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -160,38 +165,44 @@ public class HelloController {
     // Delete an employee
     @FXML
     private void handleDeleteEmployee() {
-        Employee<String> selectedEmployee = employeeTable.getSelectionModel()
-                .getSelectedItem();
+        try {
 
-        if (selectedEmployee == null) {
-            DialogUtility.showAlert("No employee selected",
-                    "Please select an employee to delete.");
-            return;
-        }
+            Employee<String> selectedEmployee = employeeTable
+                    .getSelectionModel().getSelectedItem();
 
-        boolean result = DialogUtility.showConfirmation("Confirm Deletion",
-                "Are you sure you want to delete employee, "
-                        + selectedEmployee.getName()
-                        + "? This action cannot be undone.");
+            if (selectedEmployee == null) {
+                DialogUtility.showAlert("No employee selected",
+                        "Please select an employee to delete.");
+                return;
+            }
 
-        if (result) {
-            AppContext.getEmployeeCollection()
-                    .removeEmployee(selectedEmployee.getEmployeeId());
+            boolean result = DialogUtility.showConfirmation("Confirm Deletion",
+                    "Are you sure you want to delete employee, "
+                            + selectedEmployee.getName()
+                            + "? This action cannot be undone.");
 
-            // Reset pagination state
-            currentPage = 1;
-            lastPage = false;
-            pageNumberLabel.setText("Page: " + currentPage);
+            if (result) {
+                AppContext.getEmployeeCollection()
+                        .removeEmployee(selectedEmployee.getEmployeeId());
 
-            // Apply current filters and refresh the table
-            Department department = departmentComboBox.getValue();
-            Double minSalary = parseDoubleOrNull(minSalaryField.getText());
-            Double maxSalary = parseDoubleOrNull(maxSalaryField.getText());
-            Double minRating = parseDoubleOrNull(minRatingField.getText());
+                // Reset pagination state
+                currentPage = 1;
+                lastPage = false;
+                pageNumberLabel.setText("Page: " + currentPage);
 
-            List<Employee<String>> employees = getEmployees(department,
-                    minSalary, maxSalary, minRating, currentPage);
-            displayEmployees(employees);
+                // Apply current filters and refresh the table
+                Department department = departmentComboBox.getValue();
+                Double minSalary = parseDoubleOrNull(minSalaryField.getText());
+                Double maxSalary = parseDoubleOrNull(maxSalaryField.getText());
+                Double minRating = parseDoubleOrNull(minRatingField.getText());
+
+                List<Employee<String>> employees = getEmployees(department,
+                        minSalary, maxSalary, minRating, currentPage);
+                this.displayEmployees(employees);
+            }
+        } catch (EmployeeNotFoundException e) {
+            DialogUtility.showErrorAlert("Error Deleting Employee",
+                    e.getMessage());
         }
     }
 
@@ -202,14 +213,11 @@ public class HelloController {
             lastPage = false;
             pageNumberLabel.setText("Page: " + currentPage);
             String searchTerm = searchField.getText();
-            if (searchTerm == null || searchTerm.isEmpty()) {
-                return;
-            }
 
             List<Employee<String>> results = AppContext.getEmployeeCollection()
                     .getEmployeeByName(searchTerm);
             employeeTable.getItems().setAll(results);
-        } catch (Exception e) {
+        } catch (EmployeeNotFoundException | InvalidInputException e) {
             DialogUtility.showErrorAlert("Search Error", e.getMessage());
         }
     }
@@ -387,8 +395,11 @@ public class HelloController {
     // Display employees in a table
     public void displayEmployees(List<Employee<String>> employees) {
         if (employees == null)
-            return;
-        employeeTable.getItems().setAll(employees);
+            employeeTable.getItems().setAll(new ArrayList<>());
+        else {
+            employeeTable.getItems().setAll(employees);
+
+        }
     }
 
     public void handleOpenRaiseSalaryModel(ActionEvent event)
