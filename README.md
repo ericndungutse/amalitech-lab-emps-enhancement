@@ -1,7 +1,3 @@
-Here’s your updated version, combining your original README and the new objectives and description you provided:
-
----
-
 # Employee Management System
 
 [![build_and_test](https://github.com/ericndungutse/amalitech-lab-emps-enhancement/actions/workflows/ci.yml/badge.svg)](https://github.com/ericndungutse/amalitech-lab-emps-enhancement/actions/workflows/ci.yml)
@@ -59,5 +55,3 @@ Here’s your updated version, combining your original README and the new object
    ```bash
    mvn javafx:run
    ```
-
----
