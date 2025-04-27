@@ -32,7 +32,7 @@ public class Validator {
     // Rating validator
     public static void validateRating(Object rating) {
         double newRating;
-        if (rating == null || rating == "") {
+        if (rating == null) {
             throw new InvalidInputException("Rating is required",
                     "performanceRating");
         }
@@ -55,8 +55,8 @@ public class Validator {
 
     }
 
-    public static void validatePercentage(double percentage) {
-        if (percentage <= 0) {
+    public static void validatePercentage(Double percentage) {
+        if (percentage == null || percentage <= 0) {
             throw new InvalidInputException(
                     "Invalid input: " + percentage
                             + " Percentage must be greater than 0.",
@@ -88,7 +88,7 @@ public class Validator {
 
     // Name Validator
     public static void validateName(String name) {
-        if (name.trim().isEmpty() || name.isBlank()) {
+        if (name == null || name.isBlank()) {
             throw new InvalidInputException("Employee name cannot be empty",
                     "name");
         }
@@ -106,6 +106,10 @@ public class Validator {
 
     // Experience validator
     public static void validateExperience(Object newValue) {
+        if (newValue == null) {
+            throw new InvalidInputException("Years of experience is required",
+                    "yearsOfExperience");
+        }
         if (newValue instanceof Number) {
             double value = ((Number) newValue).doubleValue();
 
